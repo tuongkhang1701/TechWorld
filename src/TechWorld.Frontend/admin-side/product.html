@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/admin-side.css">
+    <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.css">
+    <link rel="stylesheet" href="../assets/css/toast.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app-admin">
+        <header class="header">
+            <div class="grid">
+                <ul class="header__list">
+                    <li class="header__logo"><a href="">K9</a></li>
+                    <li class="header__welcom">
+                        <a href="#">Xin chào Khang</a>
+                        <ul class="header__profile-list">
+                            <li class="header__profile-item"><a href="">Thông tin cá nhân</a></li>
+                            <li class="header__profile-item"><a href="">Theme</a></li>
+                            <li class="header__profile-item"><a href="../login.html">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="grid">
+                <div class="grid__row bd-top">
+                    <div class="grid__column-3">
+                        <div class="sidebar">
+                            <ul class="sidebar__list">
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Tổng quan</a> </li>
+                                <li class="sidebar__item"><a href="product.html" class="sidebar__item-link">Sản phẩm</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Tài khoản</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Vai trò</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Doanh thu</a> </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid__column-9 backround-primary">
+                        <div class="options">
+                            <div class="options__loadPageIndex">
+                                <p for="pageIndex">Số lượng dòng:</p>
+                                <select name="pageIndex" id="pageIndex" class="btn" onchange="onLoadPageSize()">
+                                <option value="">Lựa chọn</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            </div>
+                            <div>
+                                <a href="#" id="btnCreate" class="btn">Thêm mới</a>
+                            </div>
+                        </div>
+
+                        <table id="content">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá gốc</th>
+                                    <th>Giá bán</th>
+                                    <th>Giá KM</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Số lượng</th>
+                                    <th>Tùy chọn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                        <div class="pagination">
+                            <ul>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="grid">
+
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal layout -->
+    <div class="modal">
+        <div class="modal__overlay">
+
+        </div>
+        <div class="modal__body">
+            <div class="modal__inner">
+                <div class="form__modal form__modal--product">
+                    <p class="form__header">Cập nhật thông tin sản phẩm</p>
+
+                    <form action="" id="formProduct" class="backround-primary formData">
+                        <div class="form-groups field-id">
+                            <p>Mã Sản phẩm</p>
+                            <input type="text" id="Id" placeholder="Mã Sản phẩm" class="form-control" readonly>
+                        </div>
+                        <div class="form-groups">
+                            <p>Sản phẩm</p>
+                            <input type="text" id="Name" placeholder="Sản phẩm" class="form-control">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Danh mục</p>
+                            <input type="text" id="Category" placeholder="Category" class="form-control" value="bbb">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Thương hiệu</p>
+                            <input type="text" id="BrandId" placeholder="BrandId" class="form-control">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Giá gốc</p>
+                            <input type="text" id="OriginalPrice" placeholder="OriginalPrice" class="form-control">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Giá bán</p>
+                            <input type="text" id="Price" placeholder="Price" class="form-control">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Giá khuyến mãi</p>
+                            <input type="text" id="PromotionPrice" placeholder="PromotionPrice" class="form-control">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Hình ảnh</p>
+                            <input type="text" id="Image" placeholder="Image" class="form-control">
+                        </div>
+
+                        <div class="form-groups">
+                            <p>Số lượng</p>
+                            <input type="text" id="Quantity" placeholder="Quantity" class="form-control">
+                        </div>
+                        <div class="form-groups group-btn">
+                            <a href="#" class="btn btn-normal" id="btnBack">Quay lại</a>
+                            <a href="#" class="btn btn-normal" onclick="SubmitData()" type=" submit ">Xác nhận</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="toast ">
+
+    </div>
+
+    <script src="../assets/js/admin-side/pagination.js "></script>
+    <script src="../assets/js/toast.js "></script>
+    <script src="../assets/js/admin-side/product.js "></script>
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+.app-admin {
+    background-color: var(--while-color);
+}
+
+.header {
+    height: 6rem;
+    background-color: var(--primary-color);
+}
+
+.header .header__welcom a {
+    color: var(--while-color);
+    text-decoration: none;
+    padding: 2rem 1.2rem;
+}
+
+.header__list {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    line-height: 7rem;
+    font-size: 2rem;
+    padding: 0 2rem;
+}
+
+.header .header__welcom {
+    position: relative;
+}
+
+.header .header__welcom:hover .header__profile-list {
+    display: block;
+}
+
+header .header__profile-list {
+    display: none;
+    position: absolute;
+    list-style: none;
+    top: 6rem;
+    font-size: 1.5rem;
+    min-width: 16rem;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: var(--primary-color);
+    left: 1.2rem;
+}
+
+.header .header__profile-item {
+    line-height: 4rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.header .header__profile-item a {
+    display: block;
+    text-decoration: none;
+    padding: 0 1.2rem;
+}
+
+.header .header__profile-item a:hover {
+    background-color: var(--second-color);
+}
+
+.header__item {}
+
+.header__item {}
+
+
+/* ==============================SIDE BAR========================= */
+
+.sidebar {}
+
+.sidebar__list {
+    font-size: 2.2rem;
+    list-style: none;
+    line-height: 7rem;
+    background-color: var(--primary-color);
+    height: 100vh;
+    display: block;
+    text-align: center;
+}
+
+.sidebar .sidebar__item {
+    border-bottom: 4px solid var(--border-color);
+    line-height: 7rem;
+}
+
+.sidebar .sidebar__item-link {
+    display: block;
+    text-decoration: none;
+    line-height: 100%;
+    width: 100%;
+    height: 100%;
+    padding: 2rem 0;
+    color: var(--while-color);
+    transition: all .3s;
+}
+
+.sidebar .sidebar__item-link:hover {
+    padding-left: 1rem;
+    background-color: var(--second-color);
+}
+
+
+/* ================================CONTAINER=============================== */
+
+#content {
+    border: var(--primary-color);
+    margin-top: 6rem;
+    font-size: 1.6rem;
+    border-collapse: collapse;
+    width: 100%;
+    line-height: 4rem;
+    padding-left: 0;
+    color: var(--text-color);
+    font-weight: 500;
+    background-color: var(--while-color);
+}
+
+#content,
+th,
+td {
+    border: 3px solid var(--primary-color);
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 3rem;
+}
+
+
+/* ========================FORM======================== */
+
+form {
+    /* margin-top: 4rem; */
+    font-size: 1.5rem;
+}
+
+.form-groups {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-groups+.form-groups {
+    margin-top: 2rem;
+}
+
+.form-groups p {
+    font-size: 1.8rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.form-control {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.group-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+
+.group-btn a+a {
+    margin-left: 1rem;
+}
+
+
+/* ================SELECTBOX================ */
+
+.options {
+    display: flex;
+    margin-top: 1rem;
+    list-style: none;
+    font-size: 1.6rem;
+    line-height: 1rem;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.options .options__loadPageIndex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.options .options__loadPageIndex #pageIndex {
+    margin-left: 1rem;
+}
+
+
+/* =============FORM=================== */
+
+.formData {
+    display: block;
+    min-width: 1000px;
+    padding: 3rem 0;
+    border-radius: 4px;
+}
+
+.formData p {
+    min-width: 20rem;
+    padding-left: 2rem;
+}
+
+.formData input {
+    margin-right: 2rem;
+}
+
+.form__header {
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    background-color: var(--primary-color);
+    padding: 2rem 0 0 0;
+    user-select: none;
+}
+
+.form__modal--product {
+    display: none;
+}
