@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/admin-side.css">
+    <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.css">
+    <link rel="stylesheet" href="../assets/css/libraries/toast.css">
+    <link rel="stylesheet" href="../assets/css/libraries/validator.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app-admin">
+        <header class="header">
+            <div class="grid">
+                <ul class="header__list">
+                    <li class="header__logo">
+                        <a href=""><img src="../assets/images/logo.png" alt="Logo"></a>
+                    </li>
+                    <li class="header__welcom">
+                        <a href="#"></a>
+                        <ul class="header__profile-list">
+                            <li class="header__profile-item"><a href="">Thông tin cá nhân</a></li>
+                            <li class="header__profile-item"><a href="">Theme</a></li>
+                            <li class="header__profile-item" onclick="event.preventDefault(); logOut()"><a href="">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="grid">
+                <div class="grid__row bd-top">
+                    <div class="grid__column-3">
+                        <div class="sidebar">
+                            <ul class="sidebar__list">
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Tổng quan</a> </li>
+                                <li class="sidebar__item"><a href="category.html" class="sidebar__item-link">Danh mục</a> </li>
+                                <li class="sidebar__item"><a href="brand.html" class="sidebar__item-link">Thương hiệu</a> </li>
+                                <li class="sidebar__item"><a href="product.html" class="sidebar__item-link">Sản phẩm</a> </li>
+                                <li class="sidebar__item"><a href="user.html" class="sidebar__item-link">Tài khoản</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Vai trò</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Doanh thu</a> </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid__column-9 backround-primary">
+                        <div class="options">
+                            <div class="options__loadPageIndex">
+                                <select name="pageIndex" id="pageIndex" class="btn" onchange="onLoadPageSize()">
+                                <option value="">Số lượng dòng</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            </div>
+                            <div>
+                                <a href="#" id="btnCreate" class="btn">Thêm mới</a>
+                            </div>
+                        </div>
+
+                        <table id="content">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên đăng nhập</th>
+                                    <th>Họ tên</th>
+                                    <th>Ngày sinh</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Cập nhật</th>
+                                    <th>Tùy chọn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                        <div class="pagination">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="grid">
+
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal layout -->
+    <div class="modal">
+        <div class="modal__overlay">
+        </div>
+        <div class="modal__body">
+            <div class="modal__inner">
+                <div class="form__modal form__modal--user">
+                    <div class="grid">
+                        <div class="grid__row">
+
+                            <p class="form__header grid__column-12">Cập nhật thông tin tài khoản</p>
+
+                            <form action="" id="formUser" class="backround-primary formData">
+                                <div class="grid">
+                                    <div class="grid__row">
+                                        <div class="form-group field-id">
+                                            <input type="hidden" id="Id" placeholder="Mã Sản phẩm" class="form-control formData__input" readonly>
+                                            <span class="form-message"></span>
+                                        </div>
+                                        <div class="form-group grid__column-4">
+                                            <input type="text" rules="required" id="UserName" name="UserName" placeholder="Tên tài khoản" class="form-control formData__input">
+                                            <span class="form-message"></span>
+                                        </div>
+                                        <div class="form-group grid__column-4">
+                                            <input type="text" rules="required" id="Password" name="Password" placeholder="Mật khẩu" class="form-control formData__input">
+                                            <span class="form-message"></span>
+                                        </div>
+                                        <div class="form-group grid__column-4">
+                                            <input type="text" rules="required" id="FullName" name="FullName" placeholder="Họ và tên" class="form-control formData__input">
+                                            <span class="form-message"></span>
+                                        </div>
+                                        <div class="form-group grid__column-4">
+                                            <input type="date" rules="required" id="Dob" name="Dob" placeholder="Dob" class="form-control formData__input">
+                                        </div>
+                                        <div class="form-group grid__column-4">
+                                            <input type="text" rules="required|email" id="Email" name="Email" placeholder="Email" class="form-control formData__input">
+                                            <span class="form-message"></span>
+                                        </div>
+
+                                        <div class="form-group grid__column-4">
+                                            <input type="number" rules="required|phone" id="PhoneNumber" name="PhoneNumber" placeholder="Số điện thoại" class="form-control formData__input">
+                                            <span class="form-message"></span>
+                                        </div>
+                                        <div class="form-groups group-btn grid__full-width">
+                                            <a href="#" class="btn btn-normal" id="btnBack">Quay lại</a>
+                                            <a href="#" class="btn btn-normal" onclick="SubmitData()" type=" submit ">Xác nhận</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div id="toast">
+
+    </div>
+
+    <script src="../assets/js/admin-side/pagination.js "></script>
+    <script src="../assets/js/libraries/toast.js "></script>
+    <script src="../assets/js/libraries/cookie.js "></script>
+    <script src="../assets/js/admin-side/user.js"></script>
+    <script src="../assets/js/libraries/validator.js"></script>
+    <script>
+        var form = new Validator('#formUser');
+        form.onSubmit = function(data) {
+            console.log(data);
+        }
+    </script>
+</body>
+
+</html>

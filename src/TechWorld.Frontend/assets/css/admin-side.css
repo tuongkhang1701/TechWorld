@@ -3,8 +3,8 @@
 }
 
 .header {
-    height: 6rem;
     background-color: var(--primary-color);
+    height: 40px;
 }
 
 .header .header__welcom a {
@@ -20,6 +20,16 @@
     line-height: 7rem;
     font-size: 2rem;
     padding: 0 2rem;
+}
+
+.header__logo {
+    padding-top: 1rem;
+    padding-left: 12rem;
+}
+
+.header__logo img {
+    width: 40px;
+    height: 40px;
 }
 
 .header .header__welcom {
@@ -131,25 +141,34 @@ form {
     font-size: 1.5rem;
 }
 
-.form-groups {
+.form-group {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
 
-.form-groups+.form-groups {
+.form-group .form-message {
+    display: block;
+}
+
+.form-group+.form-group {
     margin-top: 2rem;
 }
 
-.form-groups p {
+.form-group__image {
+    height: 100px;
+    margin-bottom: 2.7rem;
+}
+
+.form-group p {
     font-size: 1.8rem;
     margin-right: 1rem;
     margin-left: 1rem;
 }
 
 .form-control {
-    padding: 1rem;
-    width: 100%;
+    padding: 1.2rem;
     border-radius: 4px;
     font-weight: 500;
 }
@@ -198,12 +217,16 @@ form {
 }
 
 .formData p {
-    min-width: 20rem;
+    min-width: 10rem;
     padding-left: 2rem;
 }
 
-.formData input {
-    margin-right: 2rem;
+.formData__input {
+    height: 40px;
+    width: 100%;
+    font-size: 1.4rem;
+    border: 1px solid var(--border-color);
+    outline: none;
 }
 
 .form__header {
@@ -217,4 +240,141 @@ form {
 
 .form__modal--product {
     display: none;
+}
+
+.form__modal--images {
+    background-color: var(--while-color);
+    display: none;
+    width: 60%;
+    min-width: 450px;
+    margin: 20px auto;
+    padding: 36px 20px;
+    border-radius: 7px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.05);
+}
+
+.form__modal--images .group-btn {
+    margin-top: 50px;
+    padding-top: 20px;
+}
+
+.form__modal--images figure {
+    width: 20%;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+.form__modal--images figcaption {
+    text-align: center;
+    font-size: 2.4vmin;
+    margin-top: 0.5vmin;
+}
+
+#imageList img {
+    width: 100%;
+}
+
+select,
+option {
+    padding: 1rem 2rem;
+    font-weight: 500;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    outline: none;
+}
+
+.dropdownCategory {
+    justify-content: flex-start;
+}
+
+.dropdownBrand {
+    justify-content: flex-start;
+}
+
+.imageListk {
+    display: flex;
+}
+
+.imageListk div+div {
+    margin-left: 1rem;
+}
+
+#formImage {
+    background-color: var(--while-color);
+    width: 60%;
+    min-width: 450px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+label[for="Image"] {
+    display: block;
+    font-size: 14px;
+    background-color: var(--while-color);
+    text-align: center;
+    height: 40px;
+    width: 100px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#imageList {
+    display: flex;
+    margin: 0 1rem 0 0;
+    justify-content: space-evenly;
+    width: 100px;
+    height: 100%;
+}
+
+#imageList img {
+    border-radius: 4px;
+}
+
+#preview-image {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 620px;
+    justify-content: space-evenly;
+}
+
+#preview-image figure {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+}
+
+#preview-image figure img {
+    height: 85%;
+    width: 100%;
+}
+
+#preview-image figcaption {
+    font-size: 14px;
+    line-height: 14px;
+    padding: 0 2rem;
+    overflow: hidden;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* #num-of-files {
+    text-align: center;
+    font-size: 18px;
+} */
+
+.container-image {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex: 1;
 }

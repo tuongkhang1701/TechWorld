@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -19,23 +20,23 @@ namespace TechWorld.BackendServer.Data.Entities.Contents
         [Required]
         public string Name { get; set; }
 
-        [Column(TypeName = "ntext")]
+        [StringLength(255)]
         public string Description { get; set; }
 
         [Column(TypeName = "ntext")]
         public string Content { get; set; }
 
+        public string Image { get; set; }
+
         public float? OriginalPrice { get; set; }
 
+        [Required]
+        [DefaultValue(0)]
         public float? Price { get; set; }
 
         public float? PromotionPrice { get; set; }
 
         public int Quantity { get; set; }
-
-        public string ImageUrl { get; set; }
-
-        public string ImageList { get; set; }
 
         public int ViewCount { get; set; }
 
@@ -45,7 +46,7 @@ namespace TechWorld.BackendServer.Data.Entities.Contents
 
         public string SeoKeyword { get; set; }
 
-        public string SeoDecription { get; set; }
+        public string SeoDescription { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

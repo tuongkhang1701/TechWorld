@@ -5,10 +5,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TechWorld.BackendServer.Data;
+using TechWorld.BackendServer.Data.Entities.Contents;
 using TechWorld.BackendServer.Data.Entities.Systems;
 using TechWorld.BackendServer.Helpers;
 using TechWorld.ViewModels;
 using TechWorld.ViewModels.Systems;
+using static Dapper.SqlMapper;
 
 namespace TechWorld.BackendServer.Controllers
 {
@@ -33,66 +35,79 @@ namespace TechWorld.BackendServer.Controllers
             {
                 Id = u.Id,
                 UserName = u.UserName,
-                Dob = u.Dob,
+                Dob = u.Dob.ToString("dd/mm/yyyy"),
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
-                FirstName = u.FirstName,
-                LastName = u.LastName
+                FullName = u.FullName,
+                DateCreated = u.DateCreated.ToString("dd/MM/yyyy HH:mm"),
+                DateUpdated = u.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm")
             }).ToListAsync();
             return Ok(UserVms);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id.ToString());
 
-            if (user == null)
-            {
-                return NotFound();
+                if (user == null)
+                {
+                    return NotFound(new ApiNotFoundResponse($"Cannot find user with id {id}"));
+                }
+                var userVm = new UserVm()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Dob = user.Dob.ToString("yyyy-MM-dd"),
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    FullName = user.FullName,
+                    DateCreated = user.DateCreated.ToString("dd/MM/yyyy HH:mm"),
+                    DateUpdated = user.DateUpdated.HasValue ? user.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm") : null
+                };
+                return Ok(userVm);
             }
-            var userVm = new UserVm()
+            catch (Exception ex)
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                Dob = user.Dob,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
-            return Ok(userVm);
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+            }
+
         }
 
-        [HttpGet("filter")]
-        public async Task<IActionResult> GetPaging(string filter, int pageIndex, int pageSize)
+        [HttpPost("pagination")]
+        public async Task<IActionResult> GetPaging([FromBody] PaginationRequest request)
         {
             var query = _userManager.Users.AsQueryable();
-            if (!string.IsNullOrEmpty(filter))
+            if (!string.IsNullOrEmpty(request.Keyword))
             {
-                query = query.Where(x => x.Email.Contains(filter) || x.PhoneNumber.Contains(filter) || x.UserName.Contains(filter));
+                query = query.Where(x => x.Email.Contains(request.Keyword) || x.PhoneNumber.Contains(request.Keyword) || x.UserName.Contains(request.Keyword));
             }
             var totalRow = await query.CountAsync();
 
             var items = await query
-                .Take((pageIndex - 1) * pageSize)
+                .Skip((request.PageIndex - 1) * request.PageSize)
                 .Select(u => new UserVm()
                 {
                     Id = u.Id,
                     UserName = u.UserName,
-                    Dob = u.Dob,
+                    Dob = u.Dob.ToString("dd/MM/yyyy"),
                     Email = u.Email,
                     PhoneNumber = u.PhoneNumber,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName
+                    FullName = u.FullName,
+                    DateCreated = u.DateCreated.ToString("dd/MM/yyyy HH:mm"),
+                    DateUpdated = u.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm")
                 })
-                .Skip(pageSize).ToListAsync();
+                .Take(request.PageSize).ToListAsync();
 
             var pagination = new Pagination<UserVm>()
             {
                 Items = items,
                 TotalRow = totalRow,
-                TotalPage = (int)Math.Ceiling((double)totalRow / pageSize)
+                TotalPage = (int)Math.Ceiling((double)totalRow / request.PageSize),
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
             };
 
             return Ok(pagination);
@@ -100,24 +115,41 @@ namespace TechWorld.BackendServer.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] UserCreateRequest request)
+        public async Task<IActionResult> Post([FromBody] UserCreateRequest request)
         {
-            var user = new User()
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                Email = request.Email,
-                Dob = request.Dob,
-                UserName = request.UserName,
-                LastName = request.LastName,
-                FirstName = request.FirstName,
-                PhoneNumber = request.PhoneNumber
-            };
-            var result = await _userManager.CreateAsync(user, request.Password);
-            if (result.Succeeded)
-            {
-                return CreatedAtAction(nameof(Get), new { id = user.Id }, request);
+                var user = new User()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = request.Email,
+                    Dob = request.Dob,
+                    UserName = request.UserName,
+                    FullName = request.FullName,
+                    PhoneNumber = request.PhoneNumber,
+                    DateCreated = DateTime.Now
+                };
+                var result = await _userManager.CreateAsync(user, request.Password);
+                if (result.Succeeded)
+                {
+                    return CreatedAtAction(nameof(Get), new { id = user.Id }, request);
+                }
+                return BadRequest(new ApiBadRequestResponse(result));
             }
-            return BadRequest(new ApiBadRequestResponse(result));
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+            }
+
+        }
+
+        [HttpPost("{username}")]
+        public async Task<IActionResult> CheckUsername(string username)
+        {
+            var existed = await _userManager.FindByNameAsync(username);
+            if (existed != null)
+                return BadRequest(new BadRequestObjectResult("Username has existed"));
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -125,11 +157,11 @@ namespace TechWorld.BackendServer.Controllers
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
-                return NotFound("Không tìm thấy user");
+                return NotFound(new ApiNotFoundResponse($"Cannot find user with id {id}"));
 
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
+            user.FullName = request.FullName;
             user.Dob = request.Dob;
+            user.DateUpdated = DateTime.Now;
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -191,5 +223,7 @@ namespace TechWorld.BackendServer.Controllers
                 .ToListAsync();
             return Ok(data);
         }
+
     }
+
 }

@@ -36,6 +36,8 @@ function loadPagination(totalPage, pageIndex) {
         if (currentPage == 0) {
             currentPage = currentPage + 1;
         }
+        if (currentPage < 1)
+            continue;
         if (currentPage > totalPage) {
             continue;
         }

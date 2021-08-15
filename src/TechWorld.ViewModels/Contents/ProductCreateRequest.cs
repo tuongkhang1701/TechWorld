@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -18,17 +19,16 @@ namespace TechWorld.ViewModels.Contents
 
         public string Content { get; set; }
 
+        public string Image { get; set; }
+
         public float? OriginalPrice { get; set; }
 
+        [DefaultValue(0)]
         public float? Price { get; set; }
 
         public float? PromotionPrice { get; set; }
 
         public int Quantity { get; set; }
-
-        public string ImageUrl { get; set; }
-
-        public string ImageList { get; set; }
 
         public string SeoAlias { get; set; }
 
@@ -36,8 +36,10 @@ namespace TechWorld.ViewModels.Contents
 
         public string SeoKeyword { get; set; }
 
-        public string SeoDecription { get; set; }
+        public string SeoDescription { get; set; }
 
         public int BrandId { get; set; }
+
+        public int CategoryId { get; set; }
     }
 }

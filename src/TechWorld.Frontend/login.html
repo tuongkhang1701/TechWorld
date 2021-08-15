@@ -42,6 +42,8 @@
             Bạn không phải là thành viên? <a href="#">Đăng ký</a>
         </div>
     </div>
+    <script src="./assets/js/libraries/cookie.js"></script>
+    <script src="./assets/js/client-side/login.js"></script>
 </body>
 
 </html>
@@ -61,32 +63,32 @@
         }
     });
 
-    document.getElementById('btnLogin').addEventListener('click', function(e) {
+    // document.getElementById('btnLogin').addEventListener('click', function(e) {
 
-        e.preventDefault();
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
+    //     e.preventDefault();
+    //     var username = document.getElementById('username').value;
+    //     var password = document.getElementById('password').value;
 
-        fetch('https://localhost:44345/api/auth', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:44345',
-                    "Referer": "http://127.0.0.1:5500"
-                },
-                body: JSON.stringify({
-                    username,
-                    password
-                }),
-            }).then(response =>
-                response.json()
-            )
-            .then(data => {
-                window.localStorage.setItem("token", data["token"])
-                window.location = "product.html";
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    });
+    //     fetch('https://localhost:44345/api/auth', {
+    //             method: 'POST', // or 'PUT'
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Access-Control-Allow-Origin': 'http://localhost:44345',
+    //                 "Referer": "http://127.0.0.1:5500"
+    //             },
+    //             body: JSON.stringify({
+    //                 username,
+    //                 password
+    //             }),
+    //         }).then(response =>
+    //             response.json()
+    //         )
+    //         .then(data => {
+    //             window.localStorage.setItem("token", data["token"])
+    //             window.location = "product.html";
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //         });
+    // });
 </Script>

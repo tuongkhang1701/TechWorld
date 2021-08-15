@@ -46,14 +46,24 @@ namespace TechWorld.BackendServer.Data
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
+        public DbSet<BrandCategory> BrandCategories { get; set; }
+
         public DbSet<ProductTag> ProductTags { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<ProductImage> ProductImages { get; set; }
 
         public DbSet<Command> Commands { get; set; }
 
         public DbSet<CommandFunction> CommandFunctions { get; set; }
 
         public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<Specification> Specifications { get; set; }
+
+        public DbSet<Cart> Carts { get; set; }
+
+
     }
 }

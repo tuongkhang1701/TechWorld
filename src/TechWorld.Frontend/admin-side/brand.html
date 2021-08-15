@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/admin-side.css">
+    <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.css">
+    <link rel="stylesheet" href="../assets/css/libraries/toast.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app-admin">
+        <header class="header">
+            <div class="grid">
+                <ul class="header__list">
+                    <li class="header__logo"><a href="">K9</a></li>
+                    <li class="header__welcom">
+                        <a href="#">Xin chào Khang</a>
+                        <ul class="header__profile-list">
+                            <li class="header__profile-item"><a href="">Thông tin cá nhân</a></li>
+                            <li class="header__profile-item"><a href="">Theme</a></li>
+                            <li class="header__profile-item" onclick="event.preventDefault(); logOut()"><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="grid">
+                <div class="grid__row bd-top">
+                    <div class="grid__column-3">
+                        <div class="sidebar">
+                            <ul class="sidebar__list">
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Tổng quan</a> </li>
+                                <li class="sidebar__item"><a href="category.html" class="sidebar__item-link">Danh mục</a> </li>
+                                <li class="sidebar__item"><a href="brand.html" class="sidebar__item-link">Thương hiệu</a> </li>
+                                <li class="sidebar__item"><a href="product.html" class="sidebar__item-link">Sản phẩm</a> </li>
+                                <li class="sidebar__item"><a href="user.html" class="sidebar__item-link">Tài khoản</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Vai trò</a> </li>
+                                <li class="sidebar__item"><a href="" class="sidebar__item-link">Doanh thu</a> </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid__column-9 backround-primary">
+                        <div class="options">
+                            <div class="options__loadPageIndex">
+                                <p for="pageIndex">Số lượng dòng:</p>
+                                <select name="pageIndex" id="pageIndex" class="btn" onchange="onLoadPageSize()">
+                                <option value="">Lựa chọn</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            </div>
+                            <div>
+                                <a href="#" id="btnCreate" class="btn">Thêm mới</a>
+                            </div>
+                        </div>
+
+                        <table id="content">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Danh mục</th>
+                                    <th>Tùy chọn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                        <div class="pagination">
+                            <ul>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="grid">
+
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal layout -->
+    <div class="modal">
+        <div class="modal__overlay">
+        </div>
+        <div class="modal__body">
+            <div class="modal__inner">
+                <div class="form__modal form__modal--brand">
+                    <p class="form__header">Cập nhật thông tin sản phẩm</p>
+
+                    <form action="" id="formBrand" class="backround-primary formData">
+                        <div class="form-groups field-id">
+                            <p>Mã thương hiệu</p>
+                            <input type="text" id="Id" placeholder="Mã thương hiệu" class="form-control" readonly>
+                        </div>
+                        <div class="form-groups dropdownCategory">
+                            <p>Danh mục</p>
+                            <select name="CategoryId" id="CategoryId">
+                                <option value="">Lựa chọn</option>
+                            </select>
+                        </div>
+                        <div class="form-groups">
+                            <p>Thương hiệu</p>
+                            <input type="text" id="Name" placeholder="Thương hiệu" class="form-control">
+                        </div>
+                        <div class="form-groups group-btn">
+                            <a href="#" class="btn btn-normal" id="btnBack">Quay lại</a>
+                            <a href="#" class="btn btn-normal" onclick="SubmitData()" type=" submit ">Xác nhận</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="toast">
+
+    </div>
+
+    <script src="../assets/js/admin-side/pagination.js"></script>
+    <script src="../assets/js/libraries/toast.js "></script>
+    <script src="../assets/js/libraries/cookie.js "></script>
+    <script src="../assets/js/admin-side/brand.js"></script>
+</body>
+
+</html>

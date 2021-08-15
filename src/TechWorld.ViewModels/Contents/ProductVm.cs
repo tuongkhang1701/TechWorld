@@ -14,8 +14,13 @@ namespace TechWorld.ViewModels.Contents
         [StringLength(200, ErrorMessage = "Tên dài tối đa 200 kí tự")]
         [Required]
         public string Name { get; set; }
-        public string Decription { get; set; }
+
+        public string Description { get; set; }
+
         public string Content { get; set; }
+
+        public string DefaultImage { get; set; }
+
 
         public float? OriginalPrice { get; set; }
 
@@ -25,9 +30,7 @@ namespace TechWorld.ViewModels.Contents
 
         public int Quantity { get; set; }
 
-        public string ImageUrl { get; set; }
-
-        public string ImageList { get; set; }
+        public string Image { get; set; }
 
         public int ViewCount { get; set; }
 
@@ -37,7 +40,7 @@ namespace TechWorld.ViewModels.Contents
 
         public string SeoKeyword { get; set; }
 
-        public string SeoDecription { get; set; }
+        public string SeoDescription { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -48,5 +51,11 @@ namespace TechWorld.ViewModels.Contents
         public int RateCount { get; set; }
 
         public int BrandId { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public CategoryVm Category { get; set; }
+
+        public BrandVm Brand { get; set; }
     }
 }

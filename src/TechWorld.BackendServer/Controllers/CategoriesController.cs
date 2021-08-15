@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TechWorld.BackendServer.Data;
 using TechWorld.BackendServer.Data.Entities.Contents;
+using TechWorld.BackendServer.Helpers;
 using TechWorld.BackendServer.Services;
 using TechWorld.ViewModels;
 using TechWorld.ViewModels.Contents;
@@ -29,9 +31,8 @@ namespace TechWorld.BackendServer.Controllers
             var categoryVms = await categories.Select(x => new CategoryVm() {
                 Id = x.Id,
                 Name = x.Name,
-                ParentId = x.ParentId.Value,
                 SeoAlias = x.SeoAlias,
-                SeoDecription= x.SeoDecription,
+                SeoDescription= x.SeoDescription,
                 SeoKeyword = x.SeoKeyword,
                 SeoTitle = x.SeoTitle,
                 SortOrder = x.SortOrder
@@ -43,58 +44,64 @@ namespace TechWorld.BackendServer.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category != null)
+            try
             {
-                var categoryVm = new CategoryVm()
+                var category = await _context.Categories.FindAsync(id);
+
+                if (category != null)
                 {
-                    Id = category.Id,
-                    Name = category.Name,
-                    ParentId = category.ParentId.Value,
-                    SeoAlias = category.SeoAlias,
-                    SeoDecription = category.SeoDecription,
-                    SeoKeyword = category.SeoKeyword,
-                    SeoTitle = category.SeoTitle,
-                    SortOrder = category.SortOrder
-                };
-                return Ok(categoryVm);
+                    var categoryVm = new CategoryVm()
+                    {
+                        Id = category.Id,
+                        Name = category.Name,
+                        SeoAlias = category.SeoAlias,
+                        SeoDescription = category.SeoDescription,
+                        SeoKeyword = category.SeoKeyword,
+                        SeoTitle = category.SeoTitle,
+                        SortOrder = category.SortOrder
+                    };
+                    return Ok(categoryVm);
+                }
+
+                return BadRequest();
             }
-
-            return BadRequest();
-
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+            }
         }
 
-        [HttpGet("filter")]
-        public async Task<IActionResult> GetPaging(string filter, int pageIndex, int pageSize)
+        [HttpPost("/api/Categories/pagination")]
+        public async Task<IActionResult> GetPaging([FromBody] PaginationRequest request)
         {
             var query = _context.Categories.AsQueryable();
-            if (!string.IsNullOrEmpty(filter))
+            if (!string.IsNullOrEmpty(request.Keyword))
             {
-                query = query.Where(x => x.Name.Contains(filter));
+                query = query.Where(x => x.Name.Contains(request.Keyword));
             }
             var totalRow = await query.CountAsync();
 
             var items = await query
-                .Take((pageIndex - 1) * pageSize)
+                .Skip((request.PageIndex - 1) * request.PageSize)
                 .Select(x => new CategoryVm()
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    ParentId = x.ParentId.Value,
                     SeoAlias = x.SeoAlias,
-                    SeoDecription = x.SeoDecription,
+                    SeoDescription = x.SeoDescription,
                     SeoKeyword = x.SeoKeyword,
                     SeoTitle = x.SeoTitle,
                     SortOrder = x.SortOrder
                 })
-                .Skip(pageSize).ToListAsync();
+                .Take(request.PageSize).ToListAsync();
 
             var pagination = new Pagination<CategoryVm>()
             {
                 Items = items,
                 TotalRow = totalRow,
-                TotalPage = (int)Math.Ceiling((double)totalRow / pageSize)
+                TotalPage = (int)Math.Ceiling((double)totalRow / request.PageSize),
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
             };
 
             return Ok(pagination);
@@ -105,52 +112,67 @@ namespace TechWorld.BackendServer.Controllers
 
         // POST api/<CategoriesController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] CategoryCreateRequest request)
+        public async Task<IActionResult> Post([FromBody] CategoryCreateRequest request)
         {
-            var category = await _context.Categories.FindAsync(request.Id);
-            if (category != null)
-                return BadRequest();
+            try
+            {
+                var category = await _context.Categories.FindAsync(request.Id);
+                if (category != null)
+                    return BadRequest();
 
-            var entity = new Category()
-            {
-                Name = request.Name,
-                ParentId = request.ParentId.Value,
-                SeoAlias = request.SeoAlias,
-                SeoDecription = request.SeoDecription,
-                SeoKeyword = request.SeoKeyword,
-                SeoTitle = request.SeoTitle,
-                SortOrder = request.SortOrder
-            };
-            entity.Id = await _sequenceService.GetNewId();
-            _context.Categories.Add(entity);
-            var result = await _context.SaveChangesAsync();
-            if (result > 0)
-            {
-                return CreatedAtAction(nameof(Get), new { id = entity.Id });
+                var entity = new Category()
+                {
+                    Name = request.Name,
+                    SeoAlias = request.SeoAlias,
+                    SeoDescription = request.SeoDescription,
+                    SeoKeyword = request.SeoKeyword,
+                    SeoTitle = request.SeoTitle
+                };
+                _context.Categories.Add(entity);
+                var result = await _context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return CreatedAtAction(nameof(Get), new { id = entity.Id });
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+                
+            }
+            
         }
 
         // PUT api/<CategoriesController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CategoryCreateRequest request)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-                return NotFound();
-
-            category.Name = request.Name;
-            category.SeoAlias = request.SeoAlias;
-            category.SeoDecription = request.SeoDecription;
-            category.SeoTitle = request.SeoTitle;
-            category.SeoKeyword = request.SeoKeyword;
-            _context.Categories.Update(category);
-            var result = await _context.SaveChangesAsync();
-            if (result > 0)
+            try
             {
-                return NoContent();
+                var category = await _context.Categories.FindAsync(id);
+                if (category == null)
+                    return NotFound();
+
+                category.Name = request.Name;
+                category.SeoAlias = request.SeoAlias;
+                category.SeoDescription = request.SeoDescription;
+                category.SeoTitle = request.SeoTitle;
+                category.SeoKeyword = request.SeoKeyword;
+                _context.Categories.Update(category);
+                var result = await _context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return Ok(id);
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+            }
+            
         }
 
         // DELETE api/<CategoriesController>/5

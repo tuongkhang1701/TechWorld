@@ -11,5 +11,7 @@ namespace TechWorld.ViewModels.Contents
         public int Id { get; set; }
         public string Name { get; set; }
         public string CssClass { get; set; }
+
+        public CategoryVm Category { get; set; }
     }
 }

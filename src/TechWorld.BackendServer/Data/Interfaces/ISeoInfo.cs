@@ -13,6 +13,6 @@ namespace TechWorld.BackendServer.Data.Interfaces
 
         string SeoKeyword { get; set; }
 
-        string SeoDecription { get; set; }
+        string SeoDescription { get; set; }
     }
 }

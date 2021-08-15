@@ -12,16 +12,13 @@ namespace TechWorld.BackendServer.Data.Entities.Systems
 {
     public class User : IdentityUser
     {
-        [MaxLength(50)]
-        [Required]
-        public string FirstName { get; set; }
+        public string FullName { get; set; }
 
-        [MaxLength(50)]
-        [Required]
-        public string LastName { get; set; }
-
-        [Required]
         public DateTime Dob { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime? DateUpdated { get; set; }
 
         public int? NumberOfExchangeBases { get; set; }
 

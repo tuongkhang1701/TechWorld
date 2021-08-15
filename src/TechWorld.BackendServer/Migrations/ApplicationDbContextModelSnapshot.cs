@@ -221,6 +221,31 @@ namespace TechWorld.BackendServer.Migrations
                     b.ToTable("BrandCategories");
                 });
 
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
+                });
+
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -232,13 +257,10 @@ namespace TechWorld.BackendServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SeoAlias")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SeoDecription")
+                    b.Property<string>("SeoDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoKeyword")
@@ -363,12 +385,10 @@ namespace TechWorld.BackendServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("ntext");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("ImageList")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -380,6 +400,7 @@ namespace TechWorld.BackendServer.Migrations
                         .HasColumnType("real");
 
                     b.Property<float?>("Price")
+                        .IsRequired()
                         .HasColumnType("real");
 
                     b.Property<float?>("PromotionPrice")
@@ -397,7 +418,7 @@ namespace TechWorld.BackendServer.Migrations
                     b.Property<string>("SeoAlias")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SeoDecription")
+                    b.Property<string>("SeoDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoKeyword")
@@ -439,6 +460,37 @@ namespace TechWorld.BackendServer.Migrations
                     b.ToTable("ProductCategories");
                 });
 
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Caption")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Path")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
+                });
+
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.ProductTag", b =>
                 {
                     b.Property<int>("ProductId")
@@ -453,6 +505,53 @@ namespace TechWorld.BackendServer.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ProductTags");
+                });
+
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Specification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Cpu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Graphic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HardWare")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Os")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ram")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReleasedYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Screen")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Specifications");
                 });
 
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Tag", b =>
@@ -568,6 +667,12 @@ namespace TechWorld.BackendServer.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
 
@@ -578,15 +683,8 @@ namespace TechWorld.BackendServer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -722,6 +820,23 @@ namespace TechWorld.BackendServer.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Cart", b =>
+                {
+                    b.HasOne("TechWorld.BackendServer.Data.Entities.Contents.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TechWorld.BackendServer.Data.Entities.Systems.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Order", b =>
                 {
                     b.HasOne("TechWorld.BackendServer.Data.Entities.Systems.User", "User")
@@ -792,6 +907,17 @@ namespace TechWorld.BackendServer.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.ProductImage", b =>
+                {
+                    b.HasOne("TechWorld.BackendServer.Data.Entities.Contents.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.ProductTag", b =>
                 {
                     b.HasOne("TechWorld.BackendServer.Data.Entities.Contents.Product", "Product")
@@ -809,6 +935,17 @@ namespace TechWorld.BackendServer.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Specification", b =>
+                {
+                    b.HasOne("TechWorld.BackendServer.Data.Entities.Contents.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Systems.CommandFunction", b =>

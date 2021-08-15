@@ -15,13 +15,12 @@ namespace TechWorld.ViewModels.Contents
         [Required]
         public string Name { get; set; }
 
-        public int? ParentId { get; set; }
 
         public int SortOrder { get; set; }
 
         public string SeoAlias { get; set; }
         public string SeoTitle { get; set; }
         public string SeoKeyword { get; set; }
-        public string SeoDecription { get; set; }
+        public string SeoDescription { get; set; }
     }
 }
