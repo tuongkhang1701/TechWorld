@@ -84,7 +84,12 @@ function loadData() {
                     strHtml += `<div class="home-product-item__sale-off">`;
                     strHtml += `<span class="home-product-item__sale-off-percent">${saleOff}%</span>`;
                     strHtml += `<span class="home-product-item__sale-off-label">GIẢM</span>`;
-                    strHtml += `</div></a></div>`;
+                    strHtml += `</div>
+                                <div class="home-product-item__btn-order">
+                                    <button class="btn home-product-item__btn-payment btn-add-to-cart" onclick="event.preventDefault();addToCart(${Items[i].Id})">Thêm vào giỏ hàng</button>
+                                    <button class="btn home-product-item__btn-payment btn-buy-now">Mua ngay</button>
+                                </div>
+                                </a></div>`;
                 }
 
                 // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
@@ -100,6 +105,57 @@ function loadData() {
                 type: 'error'
             });
         });
+}
+
+function loadCart() {
+    let cartList = document.querySelector('.header__cart-list');
+    let cartNotice = document.querySelector('.header__cart-notice');
+    fetch("https://localhost:44345/api/Carts", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            }
+        })
+        .then(function(res) {
+            if (!res.ok)
+                throw Error("Có lỗi xảy ra khi tải trang!");
+            else if (res.status == 204)
+                cartList.classList.add('header__cart-list--no-cart');
+            else {
+                if (cartList.classList.contains('header__cart-list--no-cart'))
+                    cartList.classList.remove('header__cart-list--no-cart');
+                return res.json();
+            }
+        })
+        .then(function(data) {
+            cartNotice.innerHTML = Array.from(data).length;
+            cartList.innerHTML = '';
+            let html = '<h4 class="header__cart-heading">Sản phẩm đã thêm</h4><ul class="header__cart-list-item">';
+            data.forEach(item => {
+                html += `
+                <li class="header__cart-item">
+                    <img src="${item.Product.DefaultImage}" alt="" class="header__cart-img">
+                    <div class="header__cart-item-info">
+                        <div class="header__cart-item-head">
+                            <h5 class="header__cart-item-name">${item.Product.Name}</h5>
+                            <div class="header__cart-item-price-wrap">
+                                <span class="header__cart-item-price">${item.Product.PromotionPrice}</span>
+                                <span class="header__cart-item-multiply">x</span>
+                                <span class="header__carti-item-quantity">${item.Quantity}</span>
+                            </div>
+                        </div>
+                        <div class="header__cart-item-body">
+                            <span class="header__cart-item-description">PowerCore II 20000mAh - A1260</span>
+                            <span class="header__cart-item-remove" onclick="event.preventDefault();deleteFromCart(${item.Product.Id})">Xóa</span>
+                        </div>
+                    </div>
+                </li>
+                `;
+            });
+            html += '</ul><a class="header__cart-view-cart btn btn--primary">Xem giỏ hàng</a>';
+            cartList.innerHTML += cartList.innerHTML + html;
+        })
 }
 
 function pagination(filter) {
