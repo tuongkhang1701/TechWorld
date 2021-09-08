@@ -12,6 +12,7 @@ using TechWorld.BackendServer.Data.Entities.Systems;
 using TechWorld.ViewModels.Contents;
 using Microsoft.AspNetCore;
 using static System.Net.WebRequestMethods;
+using TechWorld.ViewModels.Contants;
 
 namespace TechWorld.BackendServer.Data
 {
@@ -61,7 +62,12 @@ namespace TechWorld.BackendServer.Data
                     UserName = "admin",
                     FullName = "Administrator",
                     Email = "khanglt1701@gmail.com",
+                    PhoneNumber = "0332330436",
                     DateCreated = DateTime.Now,
+                    Addresses = new List<Address>() {
+                        new Address(){FullName = "Lê Tường Khang", Phone = "0332330436", ProvinceName = "Ninh Thuận", DistrictName="Thuận Nam", WardName="Phước Dinh", StreetAddress = "375 Bình Qưới", FullStreetAddress = "375 Bình Qưới Phường 28 Quận Bình Thạnh Hồ Chí Minh",IsDefault = true},
+                        new Address(){FullName = "Trần Minh Vương", Phone = "0334446666", ProvinceName = "Ninh Thuận", DistrictName="Thuận Nam", WardName="Phước Dinh", StreetAddress = "100 Bình Qưới", FullStreetAddress = "375 Bình Qưới Phường 28 Quận Bình Thạnh Hồ Chí Minh"}
+                    },
                     LockoutEnabled = false
                 }, "Admin@123");
                 if (result.Succeeded)
@@ -411,7 +417,33 @@ namespace TechWorld.BackendServer.Data
                 };
                 await _context.AddRangeAsync(productCategories);
             }
+
+            if (!_context.PaymentMethods.Any())
+            {
+                var pMethods = new List<PaymentMethod>()
+                {
+                    new PaymentMethod() { Id = "ZALOPAY", Name = "Zalo Pay", SortOrder = 1},
+                    new PaymentMethod() { Id = "MOMO", Name = "Momo", SortOrder = 2},
+                    new PaymentMethod() { Id = "PAYPAL", Name = "Momo", SortOrder = 3},
+                    new PaymentMethod() {Id = "CREDIT-CARD", Name = "Credit Card", SortOrder= 4}
+                };
+                await _context.PaymentMethods.AddRangeAsync(pMethods);
+            }
             await _context.SaveChangesAsync();
+
+                if (!_context.Orders.Any())
+                {
+                    var orders = new List<Order>()
+                {
+                    new Order(){Id = Guid.NewGuid(), CustomerId = "727cd87e-bf3c-49af-bb28-0eb248e299e0", CustomerAddress = "TD", CustomerEmail = "TD@gmail.com", CustomerName = "Khang", PaymentMethodId = "MOMO", CustomerPhone = "0123456789", CreatedDate = DateTime.Now, OrderDetails = new List<OrderDetail>(){
+                        new OrderDetail(){ProductId = 1, Price = 200, Quantity = 1},
+                        new OrderDetail(){ProductId = 2, Price = 100, Quantity = 2},
+                    } , Status = StatusOrder.WaitForConfirmation}
+                };
+                    await _context.Orders.AddRangeAsync(orders);
+                }
+                await _context.SaveChangesAsync();
+           
             #endregion
         }
     }

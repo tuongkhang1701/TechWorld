@@ -57,5 +57,7 @@ namespace TechWorld.ViewModels.Contents
         public CategoryVm Category { get; set; }
 
         public BrandVm Brand { get; set; }
+
+        public SpecificationVm Specification { get; set; }
     }
 }

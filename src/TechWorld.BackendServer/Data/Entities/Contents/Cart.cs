@@ -17,7 +17,14 @@ namespace TechWorld.BackendServer.Data.Entities.Contents
 
         public int ProductId { get; set; }
 
+        public string ProductName { get; set; }
+
+        public string Image { get; set; }
+
         public string UserId { get; set; }
+
+        public float PromotionPrice { get; set; }
+        public float Price { get; set; }
 
         public int Quantity { get; set; }
 

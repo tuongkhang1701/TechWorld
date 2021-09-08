@@ -10,6 +10,10 @@ using TechWorld.BackendServer.Helpers;
 using TechWorld.ViewModels.Contents;
 using TechWorld.ViewModels;
 using TechWorld.BackendServer.Data;
+using TechWorld.ViewModels.Contants;
+using TechWorld.BackendServer.Extensions;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TechWorld.BackendServer.Controllers
 {
@@ -21,22 +25,13 @@ namespace TechWorld.BackendServer.Controllers
         {
             _context = context;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var orders = _context.Orders;
-            var categoryVms = await orders.Select(x => new CategoryVm()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                SeoAlias = x.SeoAlias,
-                SeoDescription = x.SeoDescription,
-                SeoKeyword = x.SeoKeyword,
-                SeoTitle = x.SeoTitle,
-                SortOrder = x.SortOrder
-            }).ToListAsync();
-            return Ok(categoryVms);
+            //List<Order> orders = await _context.Orders.Include("OrderDetails").ToListAsync();
+            List<Order> orders = await _context.Orders.ToListAsync();
+            return Ok(orders);
         }
 
         [HttpGet("{id}")]
@@ -44,22 +39,6 @@ namespace TechWorld.BackendServer.Controllers
         {
             try
             {
-                var category = await _context.Orders.FindAsync(id);
-
-                if (category != null)
-                {
-                    var categoryVm = new CategoryVm()
-                    {
-                        Id = category.Id,
-                        Name = category.Name,
-                        SeoAlias = category.SeoAlias,
-                        SeoDescription = category.SeoDescription,
-                        SeoKeyword = category.SeoKeyword,
-                        SeoTitle = category.SeoTitle,
-                        SortOrder = category.SortOrder
-                    };
-                    return Ok(categoryVm);
-                }
 
                 return BadRequest();
             }
@@ -69,75 +48,48 @@ namespace TechWorld.BackendServer.Controllers
             }
         }
 
-        [HttpPost("/api/orders/pagination")]
-        public async Task<IActionResult> GetPaging([FromBody] PaginationRequest request)
-        {
-            var query = _context.orders.AsQueryable();
-            if (!string.IsNullOrEmpty(request.Keyword))
-            {
-                query = query.Where(x => x.Name.Contains(request.Keyword));
-            }
-            var totalRow = await query.CountAsync();
-
-            var items = await query
-                .Skip((request.PageIndex - 1) * request.PageSize)
-                .Select(x => new CategoryVm()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    SeoAlias = x.SeoAlias,
-                    SeoDescription = x.SeoDescription,
-                    SeoKeyword = x.SeoKeyword,
-                    SeoTitle = x.SeoTitle,
-                    SortOrder = x.SortOrder
-                })
-                .Take(request.PageSize).ToListAsync();
-
-            var pagination = new Pagination<CategoryVm>()
-            {
-                Items = items,
-                TotalRow = totalRow,
-                TotalPage = (int)Math.Ceiling((double)totalRow / request.PageSize),
-                PageIndex = request.PageIndex,
-                PageSize = request.PageSize
-            };
-
-            return Ok(pagination);
-
-        }
-
-
-
-        // POST api/<ordersController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CategoryCreateRequest request)
+        public async Task<IActionResult> Post([FromBody] OrderCreateRequest request)
         {
             try
             {
-                var category = await _context.orders.FindAsync(request.Id);
-                if (category != null)
+                var userId = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+                var address = await _context.Address.Where(x => x.Id == request.AddressId).SingleOrDefaultAsync();
+                var orderDetails = await _context.Carts.Where(x => x.UserId == userId).Select(x => new OrderDetail
+                {
+                    ProductId = x.ProductId,
+                    Price = x.Price,
+                    Quantity = x.Quantity,
+                    Image = x.Image,
+                    ProductName = x.ProductName,
+                    PromotionPrice = x.PromotionPrice,
+                }).ToListAsync();
+
+                if (address == null)
                     return BadRequest();
 
-                var entity = new Category()
+                var orders = new Order()
                 {
-                    Name = request.Name,
-                    SeoAlias = request.SeoAlias,
-                    SeoDescription = request.SeoDescription,
-                    SeoKeyword = request.SeoKeyword,
-                    SeoTitle = request.SeoTitle
+                    Id = Guid.NewGuid(),
+                    CustomerId = User.GetSpecificClaim(ClaimTypes.NameIdentifier),
+                    CustomerAddress = address.FullStreetAddress,
+                    CustomerEmail = User.GetSpecificClaim(ClaimTypes.Email),
+                    CustomerName = address.FullName,
+                    PaymentMethodId = request.PaymentMethodId,
+                    CustomerPhone = address.Phone,
+                    CreatedDate = DateTime.Now,
+                    OrderDetails = orderDetails,
+                    Status = StatusOrder.WaitForConfirmation
                 };
-                _context.orders.Add(entity);
+                await _context.Orders.AddAsync(orders);
                 var result = await _context.SaveChangesAsync();
                 if (result > 0)
-                {
-                    return CreatedAtAction(nameof(Get), new { id = entity.Id });
-                }
+                    return Ok();
                 return BadRequest();
             }
             catch (Exception ex)
             {
                 return BadRequest(new ApiBadRequestResponse(ex.ToString()));
-
             }
 
         }
@@ -148,21 +100,7 @@ namespace TechWorld.BackendServer.Controllers
         {
             try
             {
-                var category = await _context.orders.FindAsync(id);
-                if (category == null)
-                    return NotFound();
-
-                category.Name = request.Name;
-                category.SeoAlias = request.SeoAlias;
-                category.SeoDescription = request.SeoDescription;
-                category.SeoTitle = request.SeoTitle;
-                category.SeoKeyword = request.SeoKeyword;
-                _context.orders.Update(category);
-                var result = await _context.SaveChangesAsync();
-                if (result > 0)
-                {
-                    return Ok(id);
-                }
+                
                 return BadRequest();
             }
             catch (Exception ex)
@@ -177,13 +115,7 @@ namespace TechWorld.BackendServer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.orders.FindAsync(id);
-            if (product == null)
-                return NotFound();
-            _context.orders.Remove(product);
-            var result = await _context.SaveChangesAsync();
-            if (result > 0)
-                return NoContent();
+           
             return BadRequest();
         }
     }

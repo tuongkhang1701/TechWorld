@@ -15,8 +15,7 @@ namespace TechWorld.BackendServer.Data.Entities.Contents
     public class Order : IDateTracking
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string CustomerId { get; set; }
 
@@ -33,7 +32,7 @@ namespace TechWorld.BackendServer.Data.Entities.Contents
         [StringLength(20)]
         public string CustomerPhone { get; set; }
 
-        public int PaymentMethodId { get; set; }
+        public string PaymentMethodId { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }

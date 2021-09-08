@@ -110,41 +110,67 @@ namespace TechWorld.BackendServer.Controllers
                 Name = b.Name,
                 CssClass = b.CssClass
             });
-            var productVms = from p in _context.Products
-                             join pc in _context.ProductCategories on p.Id equals pc.ProductId
-                             join c in categoryVms on pc.CategoryId equals c.Id
-                             join b in brandVms on p.BrandId equals b.Id
-                             join pi in _context.ProductImages on p.Id equals pi.ProductId into pis
-                             from pIs in pis.DefaultIfEmpty()
-                             where pIs.IsDefault == true
-                             select new ProductVm()
-                             {
-                                 Id = p.Id,
-                                 Name = p.Name,
-                                 Content = p.Content,
-                                 Price = p.Price,
-                                 OriginalPrice = p.OriginalPrice,
-                                 PromotionPrice = p.PromotionPrice,
-                                 Quantity = p.Quantity,
-                                 Description = p.Description,
-                                 BrandId = p.BrandId,
-                                 Brand = b,
-                                 DefaultImage = pIs.Path==null?urlEmpty:pIs.Path,
-                                 /*https://localhost:44345/uploaded/images/20210806/download.jfif*/
-                                 /*Image = pIs.Path != null? string.Format("{0}://{1}/uploaded/images/{2}/{3}", HttpContext.Request.Scheme, HttpContext.Request.Host, pIs.DateCreated.ToString("yyyyMMdd"), pIs.Path): string.Empty,*/
-                                 CategoryId = p.CategoryId,
-                                 Category = c,
-                                 SeoAlias = p.SeoAlias,
-                                 SeoDescription = p.SeoDescription,
-                                 SeoTitle = p.SeoTitle,
-                                 SeoKeyword = p.SeoKeyword,
-                                 CreatedDate = p.CreatedDate,
-                                 UpdatedDate = p.UpdatedDate,
-                                 RateCount = p.RateCount,
-                                 RateTotal = p.RateTotal,
-                                 ViewCount = p.ViewCount
-                             };
-            return productVms;
+
+            var specificationVms = _context.Specifications.Select(s => new SpecificationVm() { 
+                Id = s.Id,
+                ProductId = s.ProductId,
+                Cpu = s.Cpu,
+                Graphic = s.Graphic,
+                HardWare = s.HardWare,
+                Origin = s.Origin,
+                Os = s.Os,
+                Ram = s.Ram,
+                ReleasedYear = s.ReleasedYear,
+                Screen = s.Screen,
+                Size = s.Size,
+                Weight = s.Weight
+            });
+            try
+            {
+                var productVms = from p in _context.Products
+                                 join pc in _context.ProductCategories on p.Id equals pc.ProductId
+                                 join c in categoryVms on pc.CategoryId equals c.Id
+                                 join b in brandVms on p.BrandId equals b.Id
+                                 join s in specificationVms on p.Id equals s.ProductId
+                                 join pi in _context.ProductImages on p.Id equals pi.ProductId into pis
+                                 from pIs in pis.DefaultIfEmpty()
+                                 where pIs.IsDefault == true
+                                 select new ProductVm()
+                                 {
+                                     Id = p.Id,
+                                     Name = p.Name,
+                                     Content = p.Content,
+                                     Price = p.Price,
+                                     OriginalPrice = p.OriginalPrice,
+                                     PromotionPrice = p.PromotionPrice,
+                                     Quantity = p.Quantity,
+                                     Description = p.Description,
+                                     BrandId = p.BrandId,
+                                     Brand = b,
+                                     Specification = s,
+                                     DefaultImage = pIs.Path == null ? urlEmpty : pIs.Path,
+                                     /*https://localhost:44345/uploaded/images/20210806/download.jfif*/
+                                     /*Image = pIs.Path != null? string.Format("{0}://{1}/uploaded/images/{2}/{3}", HttpContext.Request.Scheme, HttpContext.Request.Host, pIs.DateCreated.ToString("yyyyMMdd"), pIs.Path): string.Empty,*/
+                                     CategoryId = p.CategoryId,
+                                     Category = c,
+                                     SeoAlias = p.SeoAlias,
+                                     SeoDescription = p.SeoDescription,
+                                     SeoTitle = p.SeoTitle,
+                                     SeoKeyword = p.SeoKeyword,
+                                     CreatedDate = p.CreatedDate,
+                                     UpdatedDate = p.UpdatedDate,
+                                     RateCount = p.RateCount,
+                                     RateTotal = p.RateTotal,
+                                     ViewCount = p.ViewCount
+                                 };
+                return productVms;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+           
         }
 
         // POST api/<ProductsController>

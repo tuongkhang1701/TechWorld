@@ -8,9 +8,9 @@ namespace TechWorld.ViewModels.Contants
 {
     public enum StatusOrder
     {
-        Pending,
-        Paid,
-        Cancelled,
-        Refund
+        WaitForConfirmation,
+        Delivering,
+        Delivered,
+        Canceled
     }
 }

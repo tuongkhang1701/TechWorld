@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace TechWorld.ViewModels.Contents
 {
-    public class CartCreateRequest
+    public class OrderCreateRequest
     {
+        public int AddressId { get; set; }
 
-        public int ProductId { get; set; }
-        public float Price { get; set; }
-
-        public int Quantity { get; set; }
+        public string PaymentMethodId { get; set; }
     }
 }

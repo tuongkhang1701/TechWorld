@@ -125,7 +125,22 @@ html {
     padding-right: 5px;
     width: 100%;
 }
-
+.dp-fl-start{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.dp-fl-end{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.mr-10{
+    margin-right: 10px;
+}
+.ml-6{
+    margin-left: 6px;
+}
 
 /* Button style */
 
@@ -161,14 +176,28 @@ html {
     color: var(--while-color);
     background-color: var(--primary-color);
 }
-
+.btn--default{
+    border: 1px solid var(--border-color);
+}
 .btn.btn--disabled {
     color: #949494;
     cursor: default;
     background-color: #c3c3c3;
 }
 
-
+.form-control{
+    height: 38px;
+    padding: 10px;
+    outline: none;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    margin-bottom: 10px;
+}
+.label-control{
+    font-size: 14px;
+    color: rgba(0,0,0,.54);;
+}
 /* RESET */
 
 .reset-padding-left {
@@ -245,6 +274,9 @@ border-radius: 4px;
 }
 
 .modal__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     --growth-from: 0.7;
     --growth-to: 1;
     margin: auto;
@@ -315,4 +347,20 @@ border-radius: 4px;
 
 .select-input__link:hover {
     color: var(--primary-color);
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox */
+
+input[type=number] {
+    -moz-appearance: textfield;
 }

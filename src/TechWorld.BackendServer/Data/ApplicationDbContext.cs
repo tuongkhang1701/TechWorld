@@ -64,6 +64,9 @@ namespace TechWorld.BackendServer.Data
 
         public DbSet<Cart> Carts { get; set; }
 
+        public DbSet<Address> Address { get; set; }
+
+
 
     }
 }

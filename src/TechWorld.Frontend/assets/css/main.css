@@ -919,9 +919,19 @@
 .app__containner {
     background-color: #F5F5F5;
 }
-
+.top-name{
+    margin: 0 4px;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 500;
+    color: var(--text-color);
+    background-color: var(--while-color);
+    padding: 20px;
+    box-shadow: 0 1px 3.125rem 0 rgb(0 0 0 / 20%);
+    border-radius: 3px;
+}
 .app__content {
-    padding-top: 36px;
+    padding-top: 10px;
 }
 
 .category__heading {
@@ -1389,13 +1399,21 @@ i.home-product-item__like-icon-fill {
 .detail__image {
     background-color: var(--while-color);
     box-shadow: 0 1px 3.125rem 0 rgb(0, 0, 0, 0.2);
-    padding: 0.5rem 0 2rem;
+    padding: 0.5rem 0 1rem;
 }
 
 .detail__display-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     border-radius: 2px;
+    margin: 10px 0;
 }
-
+.detail__display-image img{
+    width: 96%;
+    height: 434px;
+}
 .detail__review-image {
     background-color: var(--while-color);
 }
@@ -1667,3 +1685,10 @@ h6 {
     background-color: #f2f3f4;
     cursor: pointer;
 }
+
+
+
+
+
+
+

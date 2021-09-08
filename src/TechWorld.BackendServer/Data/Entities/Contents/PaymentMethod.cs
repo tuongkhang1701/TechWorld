@@ -11,8 +11,7 @@ namespace TechWorld.BackendServer.Data.Entities.Contents
     public class PaymentMethod
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [StringLength(100)]
         [Required]

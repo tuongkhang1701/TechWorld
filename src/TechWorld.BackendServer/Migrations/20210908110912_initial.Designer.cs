@@ -10,7 +10,7 @@ using TechWorld.BackendServer.Data;
 namespace TechWorld.BackendServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210815112810_initial")]
+    [Migration("20210908110912_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,6 +154,51 @@ namespace TechWorld.BackendServer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DistrictName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FullStreetAddress")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ProvinceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WardName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Announcement", b =>
                 {
                     b.Property<string>("Id")
@@ -230,8 +275,20 @@ namespace TechWorld.BackendServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("PromotionPrice")
+                        .HasColumnType("real");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -281,10 +338,9 @@ namespace TechWorld.BackendServer.Migrations
 
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -308,8 +364,8 @@ namespace TechWorld.BackendServer.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("PaymentMethodId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentMethodId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -328,13 +384,22 @@ namespace TechWorld.BackendServer.Migrations
 
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("PromotionPrice")
                         .HasColumnType("real");
 
                     b.Property<int>("Quantity")
@@ -349,10 +414,8 @@ namespace TechWorld.BackendServer.Migrations
 
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.PaymentMethod", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -794,6 +857,15 @@ namespace TechWorld.BackendServer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Address", b =>
+                {
+                    b.HasOne("TechWorld.BackendServer.Data.Entities.Systems.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Contents.Announcement", b =>
                 {
                     b.HasOne("TechWorld.BackendServer.Data.Entities.Systems.User", "User")
@@ -847,9 +919,7 @@ namespace TechWorld.BackendServer.Migrations
 
                     b.HasOne("TechWorld.BackendServer.Data.Entities.Contents.PaymentMethod", "PaymentMethod")
                         .WithMany()
-                        .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaymentMethodId");
 
                     b.Navigation("PaymentMethod");
 
@@ -1026,6 +1096,11 @@ namespace TechWorld.BackendServer.Migrations
             modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Systems.Function", b =>
                 {
                     b.Navigation("CommandFunctions");
+                });
+
+            modelBuilder.Entity("TechWorld.BackendServer.Data.Entities.Systems.User", b =>
+                {
+                    b.Navigation("Addresses");
                 });
 #pragma warning restore 612, 618
         }

@@ -38,40 +38,52 @@ namespace TechWorld.BackendServer.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] UserCredential request)
         {
-            var user = await _userManager.FindByNameAsync(request.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
+            try
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
+                var user = await _userManager.FindByNameAsync(request.Username);
+                if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
+                {
+                    var userRoles = await _userManager.GetRolesAsync(user);
 
-                var authClaims = new List<Claim>
+                    var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim("FullName", user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    foreach (var userRole in userRoles)
+                    {
+                        authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    }
+
+                    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+                    var token = new JwtSecurityToken(
+                        issuer: _configuration["JWT:ValidIssuer"],
+                        audience: _configuration["JWT:ValidAudience"],
+                        expires: DateTime.Now.AddDays(1),
+                        claims: authClaims,
+                        signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                        );
+
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    });
                 }
-
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["JWT:ValidIssuer"],
-                    audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddDays(1),
-                    claims: authClaims,
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                    );
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+                return Unauthorized();
             }
-            return Unauthorized();
+            catch (Exception ex)
+            {
+
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+            }
+            
         }
 
         [HttpPost("register")]

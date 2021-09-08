@@ -3,15 +3,13 @@ filter = {
     PageIndex: 1,
     PageSize: 8
 }
-let accessToken = `Bearer ${check_cookie_name("accessToken")?check_cookie_name("accessToken"):'--something went wrong---'}`
 
 function loadData() {
-    let srcImage = '';
     fetch("https://localhost:44345/api/Products/get-images", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             }
         })
         .then(function(res) {
@@ -35,7 +33,7 @@ function loadData() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             },
             body: JSON.stringify(this.filter)
         })
@@ -52,12 +50,12 @@ function loadData() {
                 for (var i = 0; i < Items.length; i++) {
                     let saleOff = ((Math.ceil(Items[i].PromotionPrice / Items[i].Price))) * 10;
                     strHtml += `<div class="grid__column-2-4">`;
-                    strHtml += `<a class="home-product-item" href="#">`;
+                    strHtml += `<a class="home-product-item" href="/detail.html?id=${Items[i].Id}">`;
                     strHtml += `<div class="home-product-item__img" style="background-image: url(${Items[i].DefaultImage})"></div>`;
                     strHtml += `<h4 class="home-product-item__name">${Items[i].Name}</h4>`;
                     strHtml += `<div class="home-product-item__price">`;
-                    strHtml += `<span class="home-product-item__price-old">${Items[i].Price}</span>`;
-                    strHtml += `<span class="home-product-item__price-current">${Items[i].PromotionPrice}</span>`;
+                    strHtml += `<span class="home-product-item__price-old">${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Items[i].Price)}</span>`;
+                    strHtml += `<span class="home-product-item__price-current">${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Items[i].PromotionPrice)}</span>`;
                     strHtml += `</div>`;
                     strHtml += `<div class="home-product-item__action">`;
                     strHtml += `<span class="home-product-item__like home-product-item__like--liked">`;
@@ -114,7 +112,7 @@ function loadCart() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             }
         })
         .then(function(res) {
@@ -140,7 +138,7 @@ function loadCart() {
                         <div class="header__cart-item-head">
                             <h5 class="header__cart-item-name">${item.Product.Name}</h5>
                             <div class="header__cart-item-price-wrap">
-                                <span class="header__cart-item-price">${item.Product.PromotionPrice}</span>
+                                <span class="header__cart-item-price">${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.Product.PromotionPrice)}</span>
                                 <span class="header__cart-item-multiply">x</span>
                                 <span class="header__carti-item-quantity">${item.Quantity}</span>
                             </div>
@@ -153,18 +151,43 @@ function loadCart() {
                 </li>
                 `;
             });
-            html += '</ul><a class="header__cart-view-cart btn btn--primary">Xem giỏ hàng</a>';
+            html += '</ul><a class="header__cart-view-cart btn btn--primary" href="/cart.html">Xem giỏ hàng</a>';
             cartList.innerHTML += cartList.innerHTML + html;
         })
 }
-
+function addToCart(productId) {
+    // productId = this.getAttribute("data-id");
+    fetch("https://localhost:44345/api/Carts", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
+            },
+            body: JSON.stringify({
+                ProductId: productId,
+                Quantity: 1
+            })
+        })
+        .then(function(res) {
+            if (!res.ok)
+                throw Error("Có lỗi xảy ra khi tải trang!");
+            loadCart();
+        })
+        .catch(error => {
+            toast({
+                title: 'Error',
+                message: "Có lỗi xảy ra khi tải hình ảnh!",
+                type: 'error'
+            });
+        });
+};
 function pagination(filter) {
 
     fetch('https://localhost:44345/api/Products/pagination', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             },
             body: JSON.stringify(filter)
         })
@@ -190,9 +213,13 @@ function onClickPageIndex(currentPage) {
     filter.PageIndex = currentPage;
     pagination(filter);
     loadData();
+    loadCart();
 }
-
+document.querySelector('.header__cart-wrap').addEventListener('click', function(){
+    window.location.href = "/cart.html";
+});
 (function contructor() {
     loadData();
+    loadCart();
     pagination(filter);
 })()

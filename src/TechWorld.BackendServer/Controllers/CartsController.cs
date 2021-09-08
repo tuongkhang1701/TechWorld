@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using TechWorld.BackendServer.Data;
 using TechWorld.BackendServer.Data.Entities.Contents;
+using TechWorld.BackendServer.Extensions;
 using TechWorld.BackendServer.Helpers;
 using TechWorld.ViewModels.Contents;
 
@@ -80,8 +81,11 @@ namespace TechWorld.BackendServer.Controllers
         {
             try
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+                var urlEmpty = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploaded/images/empty.jpg";
+                var userId = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+                var product = await _context.Products.Where(x => x.Id == request.ProductId).SingleOrDefaultAsync();
+                if (product == null)
+                    return BadRequest();
 
                 var productExisted = await _context.Carts.Where(x => x.ProductId == request.ProductId && x.UserId == userId).SingleOrDefaultAsync();
                 if (productExisted == null)
@@ -89,8 +93,12 @@ namespace TechWorld.BackendServer.Controllers
                     _context.Carts.Add(new Cart()
                     {
                         ProductId = request.ProductId,
-                        UserId = userId,
-                        Quantity = 1
+                        UserId = userId.ToString(),
+                        Quantity = 1,
+                        Price = product.Price.Value,
+                        Image = product.Image == null ? urlEmpty : product.Image,
+                        ProductName = product.Name,
+                        PromotionPrice =product.PromotionPrice.Value
                     });
                 }
                 else
@@ -164,5 +172,45 @@ namespace TechWorld.BackendServer.Controllers
                 return BadRequest(new ApiBadRequestResponse(ex.ToString()));
             }
         }
+
+        #region Checkout
+        [HttpPost("checkout")]
+        public async Task<IActionResult> Checkout([FromBody] CheckoutVm request)
+        {
+            var userId = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+            var carts = await _context.Carts.Where(x => x.UserId == userId).ToListAsync();
+            var details = new List<OrderDetail>();
+            foreach (var cart in carts)
+            {
+                details.Add(new OrderDetail()
+                {
+                    Product = cart.Product,
+                    Price = cart.Price,
+                    Quantity = cart.Quantity,
+                    ProductId = cart.ProductId
+                });
+            }
+            var order = new Order()
+            {
+                CustomerName = request.CustomerName,
+                CustomerAddress = request.CustomerAddress,
+                CustomerEmail = request.CustomerEmail,
+                CustomerPhone = request.CustomerPhone,
+                PaymentMethodId = request.PaymentMethodId,
+                OrderDetails = details
+            };
+            if (User.Identity.IsAuthenticated == true)
+            {
+                order.CustomerId = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+            }
+            await _context.Orders.AddAsync(order);
+            var result = await _context.SaveChangesAsync();
+
+            if (result > 0)
+                return NoContent();
+            return BadRequest(new ApiBadRequestResponse("Has an error"));
+        }
+
+        #endregion
     }
 }

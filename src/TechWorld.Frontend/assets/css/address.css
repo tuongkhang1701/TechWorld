@@ -1,0 +1,62 @@
+/* Address */
+
+.address-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem 0.3rem 3rem 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.address-body__add-address {
+    font-size: 1.4rem;
+    background-color: var(--primary-color);
+    color: var(--while-color);
+}
+
+.address-body__add-address:hover {
+    background-color: var(--second-color);
+}
+
+.address-body__add-address-icon {
+    margin-right: 1rem;
+}
+
+.address-body__option {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.address-body__option--default {
+    border: 1px solid var(--border-color);
+}
+
+.address-body__option--edit:hover,
+.address-body__option--delete:hover {
+    color: var(--primary-color);
+}
+
+.address-body__isDefault {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    padding: 3px 7px 2px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    color: var(--while-color);
+    margin-left: 6px;
+}
+
+.form-address {
+    display: flex;
+    width: 500px;
+    height: 550px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--while-color);
+}
+
+/* ACCOUNT/PASSWORD */

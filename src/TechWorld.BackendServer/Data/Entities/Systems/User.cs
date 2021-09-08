@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TechWorld.BackendServer.Data.Entities.Contents;
 using TechWorld.BackendServer.Data.Interfaces;
 using TechWorld.ViewModels.Contants;
 
@@ -25,5 +26,7 @@ namespace TechWorld.BackendServer.Data.Entities.Systems
         public int? NumberOfVotes { get; set; }
 
         public int? NumberOfReports { get; set; }
+
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }
