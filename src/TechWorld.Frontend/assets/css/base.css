@@ -179,6 +179,10 @@ html {
 .btn--default{
     border: 1px solid var(--border-color);
 }
+
+.btn--default:hover{
+    background-color: rgba(0,0,0,.02);
+}
 .btn.btn--disabled {
     color: #949494;
     cursor: default;
@@ -192,7 +196,7 @@ html {
     font-size: 14px;
     border: 1px solid var(--border-color);
     width: 100%;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 .label-control{
     font-size: 14px;

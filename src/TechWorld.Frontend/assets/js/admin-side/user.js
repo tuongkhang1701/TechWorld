@@ -3,27 +3,27 @@ filter = {
     PageIndex: 1,
     PageSize: 4
 }
-let accessToken = `Bearer ${check_cookie_name("accessToken")?check_cookie_name("accessToken"):'--something went wrong---'}`
-var url = 'https://localhost:44345/api/Users/pagination';
 
 // Process data
 function getDataForm() {
     let dataInput = document.querySelectorAll(`#formUser input`);
-
+    let selectElm = document.getElementById('RoleId').value;
     let result = Array.from(dataInput).reduce((acc, input) => ({
         ...acc,
         [input.id]: input.value
     }), {});
+    roleId = {RoleId: selectElm};
+    result = Object.assign(result, roleId);
     return result;
 }
 
 function loadData() {
 
-    fetch(this.url, {
+    fetch(`https://localhost:44345/api/Users/pagination`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             },
             body: JSON.stringify(this.filter)
         })
@@ -47,7 +47,7 @@ function loadData() {
                     strHtml += `<td>${Items[i].Email}</td>`;
                     strHtml += `<td>${Items[i].PhoneNumber}</td>`;
                     strHtml += `<td>${Items[i].DateCreated}</td>`;
-                    strHtml += `<td>${Items[i].DateUpdated}</td>`;
+                    strHtml += `<td>${Items[i].Role.Name}</td>`;
                     strHtml += `<td>
                                     <a href="#" class="btnEdit" onclick="event.preventDefault(); showForm('${Items[i].Id}')"><i class="fas fa-edit"></i></i></a>
                                     <a href="#" class="btnDelete" onclick="event.preventDefault(); deleteData('${Items[i].Id}')"><i class="fas fa-trash-alt"></i></a>
@@ -75,21 +75,16 @@ function deleteData(id) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             }
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi xóa dữ liệu!");
-            else {
-                hideModal();
                 loadData();
                 toast({
                     title: 'Success',
                     message: 'Xóa sản phẩm thành công',
                     type: 'success'
                 });
-            }
         })
         .catch(error => {
             toast({
@@ -108,7 +103,7 @@ function createData() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': accessToken
+                    'Authorization': `Bearer ${check_cookie_name("accessToken")}`
                 },
                 body: JSON.stringify(inputValues)
             })
@@ -117,7 +112,9 @@ function createData() {
                 if (!res.ok)
                     throw Error("Xảy ra lỗi khi thêm sản phẩm");
                 else {
-                    hideModal();
+                    let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
                     loadData();
                     toast({
                         title: 'Success',
@@ -148,24 +145,22 @@ function getDataById(id) {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             }
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi khi xảy ra khi tải dữ liệu");
             return res.json();
         })
         .then(function(data) {
             let listKey = Object.keys(data);
-
             Array.from(formData).forEach(function(item, index) {
                 //data.Name
                 listKey.forEach(function(jtem) {
                     if (item.id == jtem)
-                        item.value = data[jtem];
+                    item.value = data[jtem];
                 });
             });
+            document.getElementById('RoleId').value = data.Role.Name;
         })
         .catch(error => {
             toast({
@@ -182,7 +177,7 @@ function updateData() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             },
             body: JSON.stringify(inputValues)
         })
@@ -190,7 +185,9 @@ function updateData() {
             if (!res.ok)
                 throw Error("Có lỗi xảy ra khi cập nhật dữ liệu!");
             else {
-                hideModal();
+                let modal = document.getElementById('modal');
+                if(modal.classList.contains('show'))
+                    modal.classList.remove('show');
                 loadData();
                 toast({
                     title: 'Success',
@@ -212,7 +209,7 @@ function getImages() {
     fetch(`https://localhost:44345/api/Users/get-images`, {
             method: 'GET',
             headers: {
-                'Authorization': accessToken,
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`,
             }
         })
         .then(function(res) {
@@ -244,7 +241,7 @@ function saveImages(id) {
     fetch(`https://localhost:44345/api/Uploads/upload-image`, {
             method: 'POST',
             headers: {
-                'Authorization': accessToken,
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`,
             },
             body: data
         })
@@ -301,7 +298,7 @@ function pagination(filter) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
             },
             body: JSON.stringify(filter)
         })
@@ -323,8 +320,8 @@ function pagination(filter) {
 }
 
 function SubmitData() {
-    let fieldId = document.querySelector('.field-id input');
-    if (fieldId.value != '' && fieldId.value != undefined) {
+    let id = document.getElementById('Id');
+    if (id.value != '' && id.value != undefined) {
         updateData();
     } else {
         createData();
@@ -339,7 +336,8 @@ function resetForm() {
     });
 
     formDataSelect.forEach(function(item) {
-        item.options.length = 1;
+        // item.options.length = 1;
+        item.selectedIndex = 0;
     });
 }
 
@@ -356,22 +354,6 @@ function logOut() {
     accessToken = null;
     checkLogin();
 }
-//Events
-document.querySelector('.modal__overlay').addEventListener('click', function() { hideModal() });
-
-
-function hideModal() {
-    document.querySelector('.modal').style.display = null;
-    document.querySelector('.modal__overlay').style.display = null;
-    document.querySelector('.form__modal--user').style.display = null;
-    document.querySelector('.form__modal--user').style.display = null;
-}
-
-function showModal() {
-    document.querySelector('.modal').style.display = "flex";
-    document.querySelector('.modal__overlay').style.display = "block";
-    document.querySelector(`.form__modal--user`).style.display = "block";
-}
 
 function showFormCreate() {
     document.getElementById('btnCreate').addEventListener('click', function(e) {
@@ -387,18 +369,27 @@ function loadBrandByCategory() {
 }
 
 function showForm(id) {
-    let formHeader = document.querySelector('.form__header');
+    let formHeader = document.querySelector('.header-modal');
     let userName = document.getElementById('UserName');
-    showModal();
+    // showModal();
+    let modal = document.getElementById('modal');
+    if(!modal.classList.contains('show'))
+            modal.classList.add('show');
     if (id == null && id == undefined) {
-        document.querySelector('.field-id').style.display = 'none';
+        // document.querySelector('.field-id').style.display = 'none';
         resetForm();
         userName.readOnly = false;
-        formHeader.innerHTML = "Thêm mới sản phẩm"
+        document.querySelectorAll('.password').forEach(item => {
+            item.style.display = null;
+        });
+        // formHeader.innerHTML = "Thêm mới sản phẩm"
     } else if (id != null && id != 0) {
-        formHeader.innerHTML = "Cập nhật sản phẩm";
-        document.querySelector('.field-id').style.display = null;
+        formHeader.innerHTML = "Cập nhật thành viên";
+        // document.querySelector('.field-id').style.display = null;
         userName.readOnly = true;
+        document.querySelectorAll('.password').forEach(item => {
+            item.style.display = 'none';
+        });
         getDataById(id);
     }
 }
@@ -419,7 +410,7 @@ function onClickPageIndex(currentPage) {
 }
 
 function registerEvents() {
-    hideModal();
+    // hideModal();
     showFormCreate();
 }
 

@@ -4,7 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using TechWorld.BackendServer.Authorization;
+using TechWorld.BackendServer.Constants;
 using TechWorld.BackendServer.Data;
 using TechWorld.BackendServer.Data.Entities.Contents;
 using TechWorld.BackendServer.Helpers;
@@ -50,6 +53,7 @@ namespace TechWorld.BackendServer.Controllers
             return BadRequest();
         }
 
+        [ClaimRequirement(ClaimTypes.Role, SystemConstants.ADMIN)]
         [HttpPost("pagination")]
         public async Task<IActionResult> GetPaging([FromBody] PaginationRequest request)
         {

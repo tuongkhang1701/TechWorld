@@ -17,7 +17,10 @@
 .profile-category__header a:hover {
     color: var(--primary-color);
 }
+.profile-category__header a.active{
+    color: var(--primary-color);
 
+}
 .profile-category__icon {
     font-size: 16px;
     line-height: 20px;
@@ -41,7 +44,9 @@
     margin-bottom: 15px;
     color: #737373;
 }
-
+.profile-category__item.active{
+    color: var(--primary-color);
+}
 .profile-category__item:hover {
     color: var(--primary-color);
 }
@@ -84,6 +89,7 @@
 
 .profile-body__container {
     padding-top: 30px;
+    min-height: 460px;
 }
 
 .profile-body__item {
@@ -110,8 +116,10 @@
     padding-left: 20px;
 }
 
-.profile-body__item input[type="text"],
-input[type="date"] {
+.profile-body__item input[type="password"],
+input[type="date"],
+input[type="text"]
+ {
     padding: 10px;
     width: 462px;
     height: 40px;
@@ -161,7 +169,6 @@ input[type="date"] {
 
 
 /* Order */
-
 .profile-body__header-list {
     display: flex;
     justify-content: space-around;
@@ -254,14 +261,24 @@ input[type="date"] {
 .order-list {
     width: 100%;
 }
-
+.order-body__list{
+    min-height: 600px;
+}
 .order-item {
     padding: 24px 24px 12px 24px;
     background-color: var(--while-color);
     /* box-shadow: 0 1px 1px 0 rgb(0, 0, 0, 0.05); */
 }
-
-.order-item__status {
+.order-item-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.order-item-info__address{
+    font-size: 16px;
+    line-height: 19px;
+}
+.order-item-info__status {
     font-size: 14px;
     line-height: 20px;
     font-weight: 400;
@@ -270,7 +287,9 @@ input[type="date"] {
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border-color);
 }
-
+.order-item__btn-cancel{
+    text-align: end;
+}
 .order-item-detail {
     display: flex;
     justify-content: center;
@@ -320,7 +339,19 @@ input[type="date"] {
     text-decoration: line-through;
     color: #dddddd;
 }
-
+.order-item__payment-total{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.order-item__payment-method{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 24px 24px 12px;
+}
 .order-item__total {
     display: flex;
     justify-content: flex-end;
@@ -344,7 +375,9 @@ input[type="date"] {
 
 
 /* Address */
-
+.address-body__container{
+    min-height: 460px;
+}
 .address-item {
     display: flex;
     justify-content: space-between;

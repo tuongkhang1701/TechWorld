@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TechWorld.BackendServer.Data;
 using TechWorld.BackendServer.Data.Entities.Contents;
 using TechWorld.BackendServer.Data.Entities.Systems;
+using TechWorld.BackendServer.Extensions;
 using TechWorld.BackendServer.Helpers;
 using TechWorld.ViewModels;
 using TechWorld.ViewModels.Systems;
@@ -50,13 +52,32 @@ namespace TechWorld.BackendServer.Controllers
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(id.ToString());
+                var user = await (from u in _userManager.Users
+                            join ur in _context.UserRoles on u.Id equals ur.UserId
+                            join r in _roleManager.Roles on ur.RoleId equals r.Id
+                            select new UserVm()
+                            {
+                                Id = u.Id,
+                                UserName = u.UserName,
+                                Dob = u.Dob.ToString("dd/MM/yyyy"),
+                                Email = u.Email,
+                                PhoneNumber = u.PhoneNumber,
+                                FullName = u.FullName,
+                                DateCreated = u.DateCreated.ToString("dd/MM/yyyy HH:mm"),
+                                DateUpdated = u.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm"),
+                                Role = new RoleVm()
+                                {
+                                    Id = r.Id,
+                                    Name = r.Name
+                                }
+                            }).Where(x => x.Id == id).SingleOrDefaultAsync();
+                           
 
                 if (user == null)
                 {
                     return NotFound(new ApiNotFoundResponse($"Cannot find user with id {id}"));
                 }
-                var userVm = new UserVm()
+                /*var userVm = new UserVm()
                 {
                     Id = user.Id,
                     UserName = user.UserName,
@@ -66,8 +87,8 @@ namespace TechWorld.BackendServer.Controllers
                     FullName = user.FullName,
                     DateCreated = user.DateCreated.ToString("dd/MM/yyyy HH:mm"),
                     DateUpdated = user.DateUpdated.HasValue ? user.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm") : null
-                };
-                return Ok(userVm);
+                };*/
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -79,7 +100,25 @@ namespace TechWorld.BackendServer.Controllers
         [HttpPost("pagination")]
         public async Task<IActionResult> GetPaging([FromBody] PaginationRequest request)
         {
-            var query = _userManager.Users.AsQueryable();
+            var query = (from u in _userManager.Users
+                           join ur in _context.UserRoles on u.Id equals ur.UserId
+                           join r in _roleManager.Roles on ur.RoleId equals r.Id
+                           select new UserVm()
+                           {
+                               Id = u.Id,
+                               UserName = u.UserName,
+                               Dob = u.Dob.ToString("dd/MM/yyyy"),
+                               Email = u.Email,
+                               PhoneNumber = u.PhoneNumber,
+                               FullName = u.FullName,
+                               DateCreated = u.DateCreated.ToString("dd/MM/yyyy HH:mm"),
+                               DateUpdated = u.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm"),
+                               Role = new RoleVm()
+                               {
+                                   Id = r.Id,
+                                   Name = r.Name
+                               }
+                           }).AsQueryable();
             if (!string.IsNullOrEmpty(request.Keyword))
             {
                 query = query.Where(x => x.Email.Contains(request.Keyword) || x.PhoneNumber.Contains(request.Keyword) || x.UserName.Contains(request.Keyword));
@@ -88,19 +127,7 @@ namespace TechWorld.BackendServer.Controllers
 
             var items = await query
                 .Skip((request.PageIndex - 1) * request.PageSize)
-                .Select(u => new UserVm()
-                {
-                    Id = u.Id,
-                    UserName = u.UserName,
-                    Dob = u.Dob.ToString("dd/MM/yyyy"),
-                    Email = u.Email,
-                    PhoneNumber = u.PhoneNumber,
-                    FullName = u.FullName,
-                    DateCreated = u.DateCreated.ToString("dd/MM/yyyy HH:mm"),
-                    DateUpdated = u.DateUpdated.Value.ToString("dd/MM/yyyy HH:mm")
-                })
                 .Take(request.PageSize).ToListAsync();
-
             var pagination = new Pagination<UserVm>()
             {
                 Items = items,
@@ -132,7 +159,8 @@ namespace TechWorld.BackendServer.Controllers
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {
-                    return CreatedAtAction(nameof(Get), new { id = user.Id }, request);
+                    await _userManager.AddToRoleAsync(user, request.RoleId);
+                    return NoContent();
                 }
                 return BadRequest(new ApiBadRequestResponse(result));
             }
@@ -167,17 +195,24 @@ namespace TechWorld.BackendServer.Controllers
 
             if (result.Succeeded)
             {
+                var existed = await _context.UserRoles.Where(x => x.UserId == request.Id).SingleOrDefaultAsync();
+                if (existed.RoleId != request.RoleId)
+                {
+                    _context.UserRoles.Remove(existed);
+                    await _userManager.AddToRoleAsync(user, request.RoleId);
+                }
                 return NoContent();
             }
             return BadRequest(new ApiBadRequestResponse(result));
         }
-
-        [HttpPut("{id}/change-password")]
-        public async Task<IActionResult> PutPassword(string id, [FromBody] UserPasswordChangeRequest request)
+        
+        [HttpPut("change-password")]
+        public async Task<IActionResult> PutPassword([FromBody] UserPasswordChangeRequest request)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var userId = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFound(new ApiNotFoundResponse($"Cannot find user with id {id}"));
+                return NotFound(new ApiNotFoundResponse($"Cannot find user with id {userId}"));
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             if (result.Succeeded)
             {
@@ -193,6 +228,8 @@ namespace TechWorld.BackendServer.Controllers
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
                 return NotFound(new ApiNotFoundResponse($"Cannot find user with id {id}"));
+            var userRole = await _context.UserRoles.Where(x => x.UserId == id).SingleOrDefaultAsync();
+            _context.UserRoles.Remove(userRole);
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
                 return NoContent();

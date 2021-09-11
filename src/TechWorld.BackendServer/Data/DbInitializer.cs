@@ -425,7 +425,8 @@ namespace TechWorld.BackendServer.Data
                     new PaymentMethod() { Id = "ZALOPAY", Name = "Zalo Pay", SortOrder = 1},
                     new PaymentMethod() { Id = "MOMO", Name = "Momo", SortOrder = 2},
                     new PaymentMethod() { Id = "PAYPAL", Name = "Momo", SortOrder = 3},
-                    new PaymentMethod() {Id = "CREDIT-CARD", Name = "Credit Card", SortOrder= 4}
+                    new PaymentMethod() {Id = "CREDIT-CARD", Name = "Credit Card", SortOrder= 4},
+                    new PaymentMethod() {Id = "CASH-ON-DELIVERY", Name = "Credit Card", SortOrder= 5},
                 };
                 await _context.PaymentMethods.AddRangeAsync(pMethods);
             }

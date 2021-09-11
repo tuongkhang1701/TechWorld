@@ -16,11 +16,18 @@ function login(username, password) {
             })
             .then(function(response) {
                 if (!response.ok)
-                    throw Error("Đăng nhập thất bại!");
-                return response.json();
+                    toast({
+                        title: 'Thất bại',
+                        message: "Tên đăng nhập hoặc mật khẩu không đúng",
+                        type: 'error'
+                    });
+                else{
+                    return response.json();
+                }
             })
             .then(function(data) {
-                createCookie("accessToken", data.token, data.expiration);
+                
+                createCookie("accessToken", data.token, new Date(data.expiration).getDate() - new Date().getDate());
                 window.location.href = "admin-side/product.html";
             })
     } catch (error) {

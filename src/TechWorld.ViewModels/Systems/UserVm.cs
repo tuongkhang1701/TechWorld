@@ -25,5 +25,7 @@ namespace TechWorld.ViewModels.Systems
         public string DateCreated { get; set; }
 
         public string? DateUpdated { get; set; }
+
+        public RoleVm Role { get; set; }
     }
 }

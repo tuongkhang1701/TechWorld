@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/base.css">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/libraries/toast.css">
     <script src="https://kit.fontawesome.com/4899cf9b80.js" crossorigin="anonymous"></script>
     <title>Đăng nhập</title>
 </head>
@@ -42,13 +43,18 @@
             Bạn không phải là thành viên? <a href="#">Đăng ký</a>
         </div>
     </div>
+    <div id="toast">
+
+    </div>
+
     <script src="./assets/js/libraries/cookie.js"></script>
+    <script src="./assets/js/libraries/toast.js"></script>
     <script src="./assets/js/client-side/login.js"></script>
 </body>
 
 </html>
 
-<Script>
+<script>
     var input = document.querySelector('.password');
     var show = document.querySelector('.show');
     show.addEventListener('click', function() {
@@ -91,4 +97,4 @@
     //             console.error('Error:', error);
     //         });
     // });
-</Script>
+</script>

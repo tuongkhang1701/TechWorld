@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace TechWorld.BackendServer.Controllers
                 if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
                 {
                     var userRoles = await _userManager.GetRolesAsync(user);
+                    var roleName = await _userManager.GetRolesAsync(user);
 
                     var authClaims = new List<Claim>
                 {
@@ -52,6 +54,7 @@ namespace TechWorld.BackendServer.Controllers
                     new Claim("FullName", user.FullName),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                    new Claim(ClaimTypes.Role, roleName[0]),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -83,7 +86,7 @@ namespace TechWorld.BackendServer.Controllers
 
                 return BadRequest(new ApiBadRequestResponse(ex.ToString()));
             }
-            
+
         }
 
         [HttpPost("register")]
@@ -98,14 +101,14 @@ namespace TechWorld.BackendServer.Controllers
             {
                 Email = request.Email,
                 UserName = request.Username,
-                FullName =request.FirstName,
+                FullName = request.FirstName,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
                 return BadRequest(new ApiBadRequestResponse("User creation failed! Please check user details and try again."));
-
+            await _userManager.AddToRoleAsync(user, request.RoleName);
             return Ok(new ApiResponse(200, "User created successfully!"));
         }
 

@@ -17,6 +17,8 @@ namespace TechWorld.ViewModels.Systems
 
         public string FullName { get; set; }
 
+        public string RoleId { get; set; }
+
         public DateTime Dob { get; set; }
     }
 }

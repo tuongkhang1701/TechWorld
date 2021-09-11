@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.css">
     <link rel="stylesheet" href="../assets/css/libraries/toast.css">
     <link rel="stylesheet" href="../assets/css/libraries/validator.css">
+    <link rel="stylesheet" href="../assets/css/libraries/modal.css">
     <title>Document</title>
 </head>
 
@@ -36,7 +37,7 @@
         <div class="container">
             <div class="grid">
                 <div class="grid__row bd-top">
-                    <div class="grid__column-3">
+                    <div class="grid__column-2">
                         <div class="sidebar">
                             <ul class="sidebar__list">
                                 <li class="sidebar__item"><a href="" class="sidebar__item-link">Tổng quan</a> </li>
@@ -50,7 +51,7 @@
                         </div>
                     </div>
 
-                    <div class="grid__column-9 backround-primary">
+                    <div class="grid__column-10 backround-primary">
                         <div class="options">
                             <div class="options__loadPageIndex">
                                 <select name="pageIndex" id="pageIndex" class="btn" onchange="onLoadPageSize()">
@@ -77,7 +78,7 @@
                                     <th>Email</th>
                                     <th>Số điện thoại</th>
                                     <th>Ngày tạo</th>
-                                    <th>Cập nhật</th>
+                                    <th>Quyền</th>
                                     <th>Tùy chọn</th>
                                 </tr>
                             </thead>
@@ -102,7 +103,7 @@
     </div>
 
     <!-- Modal layout -->
-    <div class="modal">
+    <!-- <div class="modal">
         <div class="modal__overlay">
         </div>
         <div class="modal__body">
@@ -160,7 +161,70 @@
         </div>
     </div>
     </div>
+    </div> -->
+
+    <!-- Modal layout -->
+    <div class="modal" id="modal">
+        <div class="modal-container" id="modal-container">
+            <div class="modal-inner" id="modal-inner">
+                <div class="grid">
+                    <p class="grid__full-width header-modal">Thêm thành viên</p> 
+                    <form action="" class="grid__row" id="formUser">
+                        <div class="grid__column-12 form-group">
+                            <input type="hidden" id="Id" name="Id" class="form-control">
+                            <input type="text" rules="required|min:5" id="UserName" name="UserName" class="form-control"  placeholder="Tên đăng nhập">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group password">
+                            <input type="text" rules="required|min:6" id="Password" name="Password" class="form-control"  placeholder="Mật khẩu">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group password">
+                            <input type="text" rules="required" id="RePassword" name="RePassword" class="form-control"  placeholder="Xác nhận mật khẩu">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group">
+                            <input type="text" rules="required|email" id="Email" name="Email" class="form-control"  placeholder="Email">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-6 form-group">
+                            <input type="text" rules="required" id="FullName" name="FullName" class="form-control"  placeholder="Họ và tên">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-6 form-group">
+                            <input type="text" rules="required|phone" id="PhoneNumber" name="PhoneNumber" class="form-control"  placeholder="Số điện thoại">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-6 form-group">
+                            <input placeholder="Ngày sinh" rules="required" type="text" id="Dob" name="Dob" class="form-control"  onfocus="(this.type='date')" onblur="(this.type='text')">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-6 form-group">
+                            <select class="form-control" rules="required" id="RoleId" name="RoleId">
+                                <option value="" selected>Quyền</option>
+                                <option value="Admin">Quản trị viên</option>
+                                <option value="Member">Thành viên</option>
+                            </select>
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-12 dp-fl-end">
+                            <button class="btn btn-close-modal" id="btn-close-modal">Trở lại</button>
+                            <button type="submit" class="btn btn--primary" onclick="SubmitData()">Hoàn thành</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
     </div>
+
     <div id="toast">
 
     </div>
@@ -170,11 +234,14 @@
     <script src="../assets/js/libraries/cookie.js "></script>
     <script src="../assets/js/admin-side/user.js"></script>
     <script src="../assets/js/libraries/validator.js"></script>
+    <script src="../assets/js/libraries/modal.js"></script>
     <script>
         var form = new Validator('#formUser');
         form.onSubmit = function(data) {
             console.log(data);
         }
+
+        modal({open:'btnCreate', close:'btn-close-modal'});
     </script>
 </body>
 

@@ -226,14 +226,13 @@
                                 </div>
                                 <div class="profile-category__body">
                                     <a class="profile-category__item" href="/account/profile.html">Hồ sơ</a>
-                                    <a class="profile-category__item" href="/account/payment.html">Ngân hàng</a>
                                     <a class="profile-category__item" href="/account/address.html">Địa chỉ</a>
                                     <a class="profile-category__item" href="/account/password.html">Đổi mật khẩu</a>
                                 </div>
                             </div>
                             <div class="profile-category__dropdown">
                                 <div class="profile-category__header">
-                                    <a href="/account/order.html">
+                                    <a href="/account/order.html" class="active">
                                         <i class="fas fa-clipboard-list profile-category__icon"></i>
                                         <span>Đơn hàng</span>
                                     </a>
@@ -247,12 +246,11 @@
                     <div class="grid__column-10">
                         <div class="profile-body">
                             <div class="profile-body__header-list">
-                                <a href="" class="profile-body__header-item ">Tất cả</a>
-                                <a href="" class="profile-body__header-item active">Chờ xác nhận</a>
-                                <a href="" class="profile-body__header-item">Chờ lấy hàng</a>
-                                <a href="" class="profile-body__header-item">Đang giao</a>
-                                <a href="" class="profile-body__header-item">Đã giao</a>
-                                <a href="" class="profile-body__header-item">Đã hủy</a>
+                                <a href="" class="profile-body__header-item active" onclick="loadData(5)">Tất cả</a>
+                                <a href="" class="profile-body__header-item" onclick="loadData(0)">Chờ xác nhận</a>
+                                <a href="" class="profile-body__header-item" onclick="loadData(1)">Đang giao</a>
+                                <a href="" class="profile-body__header-item" onclick="loadData(2)">Đã giao</a>
+                                <a href="" class="profile-body__header-item" onclick="loadData(3)">Đã hủy</a>
                             </div>
                             <div class="order-body__list" id="order-body__list">
                                 <!-- <div class="order-search">
@@ -262,19 +260,9 @@
 
                                 <div class="order-list">
                                     <div class="order-item">
-                                        <p class="order-item__status">ĐÃ GIAO</p>
-                                        <div class="order-item-detail">
-                                            <img src="https://cf.shopee.vn/file/38bde90e64eda8ec6f443baf2b71f8f3_tn" alt="" class="order-item__img">
-
-                                            <div class="order-item__info">
-                                                <p class="order-item__name">Omega 3 viên uống dầu cá Omega 3 viên uống dầu cá Omega 3 viên uống dầu cá Omega 3 viên uống dầu cá</p>
-                                                <span class="order-item__quantity">x1</span>
-                                            </div>
-
-                                            <div class="order-item__price">
-                                                <span class="order-item__price--original">199.000đ</span>
-                                                <span class="order-item__price--promotion">99.000đ</span>
-                                            </div>
+                                        <div class="order-item-info">
+                                            <span class="order-item-info__address">aaaaaaa</span>
+                                            <p class="order-item-info__status">ĐÃ GIAO</p>
                                         </div>
                                         <div class="order-item-detail">
                                             <img src="https://cf.shopee.vn/file/38bde90e64eda8ec6f443baf2b71f8f3_tn" alt="" class="order-item__img">
@@ -289,17 +277,37 @@
                                                 <span class="order-item__price--promotion">99.000đ</span>
                                             </div>
                                         </div>
+                                        <div class="order-item-detail">
+                                            <img src="https://cf.shopee.vn/file/38bde90e64eda8ec6f443baf2b71f8f3_tn" alt="" class="order-item__img">
 
-                                        <div class="order-item__total">
-                                            <p class="order-item__total-label">Tổng số tiền:</p>
-                                            <span class="order-item__total-price">366.300đ</span>
+                                            <div class="order-item__info">
+                                                <p class="order-item__name">Omega 3 viên uống dầu cá Omega 3 viên uống dầu cá Omega 3 viên uống dầu cá Omega 3 viên uống dầu cá</p>
+                                                <span class="order-item__quantity">x1</span>
+                                            </div>
+
+                                            <div class="order-item__price">
+                                                <span class="order-item__price--original">199.000đ</span>
+                                                <span class="order-item__price--promotion">99.000đ</span>
+                                            </div>
                                         </div>
+                                        <div class="order-item__payment-total">
+                                            <div class="order-item__payment-method">
+                                                <p>Phương thức thanh toán:</p>
+                                                <b class="ml-6">ZaloPay</b>
+                                            </div>
+                                            <div class="order-item__total">
+                                                <p class="order-item__total-label">Tổng số tiền:</p>
+                                                <span class="order-item__total-price">366.300đ</span>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div> -->
-                                    <div class="order-no-item">
+
+                                    <!-- <div class="order-no-item">
                                         <div class="order-no-item-img"></div>
                                         <p class="order-no-item-content">Chưa có đơn hàng</p>
-                                    </div>
+                                    </div> -->
                             </div>
                             
                             
@@ -403,9 +411,9 @@
 
         </div>
     </div>
-    <script src="./assets/js/libraries/toast.js "></script>
-    <script src="./assets/js/libraries/cookie.js "></script>
-<script src="./assets/js/client-side/order.js"></script>
+    <script src="../assets/js/libraries/toast.js "></script>
+    <script src="../assets/js/libraries/cookie.js "></script>
+<script src="../assets/js/client-side/order.js"></script>
 </body>
 
 </html>

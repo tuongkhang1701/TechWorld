@@ -29,24 +29,36 @@ namespace TechWorld.BackendServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            //List<Order> orders = await _context.Orders.Include("OrderDetails").ToListAsync();
-            List<Order> orders = await _context.Orders.ToListAsync();
+            var orders = await _context.Orders.Include("OrderDetails").Select(x => new OrderVm()
+            {
+                OrderDetails = x.OrderDetails.Select(z => new OrderDetailVm()
+                {
+                    Image = z.Image,
+                    OrderId = z.OrderId.ToString(),
+                    Price = z.Price,
+                    ProductId = z.ProductId,
+                    ProductName = z.ProductName,
+                    PromotionPrice = z.PromotionPrice,
+                    Quantity = z.Quantity
+                }).ToList(),
+                PaymentMethodId = x.PaymentMethodId,
+                Id = x.Id.ToString(),
+                Status = x.Status
+            })
+               .Join(_context.PaymentMethods,
+                   order => order.PaymentMethodId,
+                   pay => pay.Id,
+                   (order, pay) => new
+                   {
+                       OrderDetails = order.OrderDetails,
+                       PaymentMethodName = pay.Name,
+                       Id = order.Id,
+                       Status = order.Status
+                   }).ToListAsync();
+            
             return Ok(orders);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            try
-            {
-
-                return BadRequest();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
-            }
-        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] OrderCreateRequest request)
@@ -71,7 +83,7 @@ namespace TechWorld.BackendServer.Controllers
                 var orders = new Order()
                 {
                     Id = Guid.NewGuid(),
-                    CustomerId = User.GetSpecificClaim(ClaimTypes.NameIdentifier),
+                    CustomerId = userId,
                     CustomerAddress = address.FullStreetAddress,
                     CustomerEmail = User.GetSpecificClaim(ClaimTypes.Email),
                     CustomerName = address.FullName,
@@ -94,29 +106,26 @@ namespace TechWorld.BackendServer.Controllers
 
         }
 
-        // PUT api/<ordersController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] CategoryCreateRequest request)
+
+        [HttpPost("{id}/update-status/{type}")]
+        public async Task<IActionResult> UpdateStatus(string id, int type)
         {
-            try
+            var order = await _context.Orders.Where(x => x.Id.ToString() == id).SingleOrDefaultAsync();
+            if (order == null)
+                return NotFound();
+            switch (type)
             {
-                
-                return BadRequest();
+                case 0: order.Status = StatusOrder.WaitForConfirmation;break;
+
+                case 1: order.Status = StatusOrder.Delivering; break;
+
+                case 2: order.Status = StatusOrder.Delivered; break;
+
+                case 3: order.Status = StatusOrder.Canceled; break;
             }
-            catch (Exception ex)
-            {
-
-                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
-            }
-
-        }
-
-        // DELETE api/<ordersController>/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-           
-            return BadRequest();
+            _context.Update(order);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

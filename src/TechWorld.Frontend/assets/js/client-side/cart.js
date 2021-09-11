@@ -198,28 +198,28 @@ function createOrder(){
     const paymentId = document.querySelector('.checkout__payment-method-item.active').value;
 
     fetch("https://localhost:44345/api/Orders", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${check_cookie_name("accessToken")}`
-                    },
-                    body: JSON.stringify({
-                        AddressId: addressId,
-                        PaymentMethodId: paymentId
-                    })
-                })
-                .then(function(res) {
-                    if(res.ok)
-                        console.log("Thành công");
-                })
-                .catch((error) => {
-                    toast({
-                        title: 'Error',
-                        message: error,
-                        type: 'error'
-                    });
-                })
-            }
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${check_cookie_name("accessToken")}`
+        },
+        body: JSON.stringify({
+            AddressId: addressId,
+            PaymentMethodId: paymentId
+        })
+    })
+    .then(function(res) {
+        if(res.ok)
+            window.location.href = "/order.html";
+    })
+    .catch((error) => {
+        toast({
+            title: 'Error',
+            message: error,
+            type: 'error'
+        });
+    })
+}
 
 let listButton = document.querySelectorAll('.checkout__payment-method-item');
 listButton.forEach(function(item){
