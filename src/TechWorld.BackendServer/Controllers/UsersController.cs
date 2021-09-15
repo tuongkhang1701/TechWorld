@@ -189,6 +189,7 @@ namespace TechWorld.BackendServer.Controllers
 
             user.FullName = request.FullName;
             user.Dob = request.Dob;
+            user.PhoneNumber = request.PhoneNumber;
             user.DateUpdated = DateTime.Now;
 
             var result = await _userManager.UpdateAsync(user);

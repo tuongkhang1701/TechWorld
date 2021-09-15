@@ -1282,6 +1282,7 @@ i.home-product-item__like-icon-fill {
     z-index: -1;
     bottom: 0;
     opacity: 0;
+    display: flex;
 }
 
 .home-product-item__btn-payment {

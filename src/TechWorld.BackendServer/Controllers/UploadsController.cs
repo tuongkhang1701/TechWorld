@@ -30,7 +30,7 @@ namespace TechWorld.BackendServer.Controllers
                 var files = HttpContext.Request.Form.Files;
                 if (files.Count == 0)
                 {
-                    return BadRequest(files);
+                    return NoContent();
                 }
                 else
                 {

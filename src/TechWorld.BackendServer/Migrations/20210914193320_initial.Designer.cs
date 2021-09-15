@@ -10,7 +10,7 @@ using TechWorld.BackendServer.Data;
 namespace TechWorld.BackendServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210908110912_initial")]
+    [Migration("20210914193320_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

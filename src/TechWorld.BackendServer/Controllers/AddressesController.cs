@@ -24,11 +24,13 @@ namespace TechWorld.BackendServer.Controllers
             _context = context;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var addressVms = await _context.Address.ToListAsync();
+            var userId = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+            var addressVms = await _context.Address.Where(x => x.UserId == userId).ToListAsync();
+            if (addressVms.Count == 0)
+                return NotFound();
             return Ok(addressVms);
         }
 
@@ -137,7 +139,7 @@ namespace TechWorld.BackendServer.Controllers
                 return NoContent();
             return BadRequest();
         }
-
+        
         [HttpPut("{id}/set-default")]
         public async Task<IActionResult> SetDefault(int id)
         {

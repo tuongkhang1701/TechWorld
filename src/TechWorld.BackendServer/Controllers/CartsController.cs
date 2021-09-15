@@ -32,7 +32,7 @@ namespace TechWorld.BackendServer.Controllers
                 var now = DateTime.Now.ToString("yyyyMMdd");
                 var urlNow = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploaded/images/{now}/";
                 var urlEmpty = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/uploaded/images/empty.jpg";
-
+                var id = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
                 var productVms = from p in _context.Products
                                  join pi in _context.ProductImages on p.Id equals pi.ProductId into pis
                                  from pIs in pis.DefaultIfEmpty()
@@ -47,6 +47,7 @@ namespace TechWorld.BackendServer.Controllers
                                  };
                 var cartVms = await (from c in _context.Carts
                                      join p in productVms on c.ProductId equals p.Id
+                                     where c.UserId == id
                                      select new CartVm()
                                      {
                                          Id = c.Id,
@@ -172,7 +173,19 @@ namespace TechWorld.BackendServer.Controllers
                 return BadRequest(new ApiBadRequestResponse(ex.ToString()));
             }
         }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAll()
+        {
+            var cart = await _context.Carts.ToListAsync();
+            if (cart == null)
+                return NotFound();
 
+            _context.Carts.RemoveRange(cart);
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+                return NoContent();
+            return BadRequest();
+        }
         #region Checkout
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] CheckoutVm request)

@@ -46,7 +46,8 @@ namespace TechWorld.BackendServer.Controllers
                 {
                     var userRoles = await _userManager.GetRolesAsync(user);
                     var roleName = await _userManager.GetRolesAsync(user);
-
+                    if(roleName[0] != "Admin")
+                        return Forbid();
                     var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
@@ -89,27 +90,128 @@ namespace TechWorld.BackendServer.Controllers
 
         }
 
+        [AllowAnonymous]
+        [HttpPost("authenticate-user")]
+        public async Task<IActionResult> AuthenticateUser([FromBody] UserCredential request)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(request.Username);
+                if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
+                {
+                    var userRoles = await _userManager.GetRolesAsync(user);
+                    var roleName = await _userManager.GetRolesAsync(user);
+
+                    var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim("FullName", user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                    new Claim(ClaimTypes.Role, roleName[0]),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+                    foreach (var userRole in userRoles)
+                    {
+                        authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    }
+
+                    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+                    var token = new JwtSecurityToken(
+                        issuer: _configuration["JWT:ValidIssuer"],
+                        audience: _configuration["JWT:ValidAudience"],
+                        expires: DateTime.Now.AddDays(1),
+                        claims: authClaims,
+                        signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                        );
+
+                    return Ok(new
+                    {
+                        user = user,
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    });
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new ApiBadRequestResponse(ex.ToString()));
+            }
+
+        }
+
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterModel request)
         {
-            var userExists = await _userManager.FindByNameAsync(request.Username);
-            if (userExists != null)
+            try
+            {
+                var userExists = await _userManager.FindByNameAsync(request.Username);
+                if (userExists != null)
+                    return BadRequest(new ApiBadRequestResponse("User already exists!"));
+
+                User user = new User()
+                {
+                    UserName = request.Username,
+                    Email = request.Email,
+                    FullName = request.FullName,
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
+
+                var result = await _userManager.CreateAsync(user, request.Password);
+                if (!result.Succeeded)
+                    return BadRequest(new ApiBadRequestResponse("User creation failed! Please check user details and try again."));
+                await _userManager.AddToRoleAsync(user, request.RoleName);
+                return Ok(new ApiResponse(200, "User created successfully!"));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
                 return BadRequest(new ApiBadRequestResponse("User already exists!"));
 
-            User user = new User()
-            {
-                Email = request.Email,
-                UserName = request.Username,
-                FullName = request.FirstName,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
+            }
 
-            var result = await _userManager.CreateAsync(user, request.Password);
-            if (!result.Succeeded)
-                return BadRequest(new ApiBadRequestResponse("User creation failed! Please check user details and try again."));
-            await _userManager.AddToRoleAsync(user, request.RoleName);
-            return Ok(new ApiResponse(200, "User created successfully!"));
+        }
+
+        [HttpPost("register-user")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterModel request)
+        {
+            try
+            {
+                var userExists = await _userManager.FindByNameAsync(request.Username);
+                if (userExists != null)
+                    return BadRequest(new ApiBadRequestResponse("User already exists!"));
+
+                User user = new User()
+                {
+                    UserName = request.Username,
+                    Email = request.Email,
+                    PhoneNumber = request.Phone,
+                    FullName = request.FullName,
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
+
+                var result = await _userManager.CreateAsync(user, request.Password);
+                if (!result.Succeeded)
+                    return BadRequest(new ApiBadRequestResponse("User creation failed! Please check user details and try again."));
+                await _userManager.AddToRoleAsync(user, "Member");
+                return Ok(new ApiResponse(200, "User created successfully!"));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+                return BadRequest(new ApiBadRequestResponse("User already exists!"));
+
+            }
+
         }
 
         [HttpPost("register-admin")]

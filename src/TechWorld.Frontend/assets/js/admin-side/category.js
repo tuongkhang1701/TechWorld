@@ -78,7 +78,7 @@ function deleteData(id) {
                 loadData();
                 toast({
                     title: 'Success',
-                    message: 'Xóa sản phẩm thành công',
+                    message: 'Xóa danh mục thành công',
                     type: 'success'
                 });
             }
@@ -105,18 +105,18 @@ function createData() {
                 body: JSON.stringify(inputValues)
             })
             .then(function(res) {
-                console.log(res);
-                if (!res.ok)
-                    throw Error("Xảy ra lỗi khi thêm sản phẩm");
-                else {
-                    hideModal();
+                if(res.ok){
+                    let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
                     loadData();
                     toast({
-                        title: 'Success',
-                        message: 'Thêm sản phẩm thành công',
+                        title: 'Thành công',
+                        message: 'Thêm danh mục thành công',
                         type: 'success'
                     });
                 }
+                    
             })
 
     } catch (error) {
@@ -204,17 +204,18 @@ function updateData() {
             body: JSON.stringify(inputValues)
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi cập nhật dữ liệu!");
-            else {
-                hideModal();
+            if(res.ok){
+                let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
                 loadData();
                 toast({
-                    title: 'Success',
-                    message: 'Cập nhật sản phẩm thành công',
+                    title: 'Thành công',
+                    message: 'Cập nhật danh mục thành công',
                     type: 'success'
                 });
             }
+                
         })
         .catch(error => {
             toast({
@@ -226,8 +227,9 @@ function updateData() {
 }
 
 function SubmitData() {
-    let fieldId = document.querySelector('.field-id input');
-    if (fieldId.value != '' && fieldId.value != undefined) {
+    var id = document.getElementById('Id');
+    // let fieldId = document.querySelector('.field-id input');
+    if (id.value != '' && id.value != undefined) {
         updateData();
     } else {
         createData();
@@ -250,21 +252,6 @@ function logOut() {
     delete_cookie("accessToken");
     checkLogin();
 }
-//Events
-document.querySelector('.modal__overlay').addEventListener('click', function() { hideModal() });
-
-
-function hideModal() {
-    document.querySelector('.modal').style.display = null;
-    document.querySelector('.modal__overlay').style.display = null;
-    document.querySelector('.form__modal--category').style.display = null;
-}
-
-function showModal() {
-    document.querySelector('.modal').style.display = "flex";
-    document.querySelector('.modal__overlay').style.display = "block";
-    document.querySelector(`.form__modal--category`).style.display = "block";
-}
 
 function showFormCreate() {
     document.getElementById('btnCreate').addEventListener('click', function(e) {
@@ -275,15 +262,18 @@ function showFormCreate() {
 
 
 function showForm(id) {
-    let formHeader = document.querySelector('.form__header');
-    showModal();
+    let formHeader = document.querySelector('.header-modal');
+    // showModal();
+    let modal = document.getElementById('modal');
+    if(!modal.classList.contains('show'))
+            modal.classList.add('show');
     if (id == null && id == undefined) {
-        document.querySelector('.field-id').style.display = 'none';
+        // document.querySelector('.field-id').style.display = 'none';
         resetForm();
         formHeader.innerHTML = "Thêm mới sản phẩm"
     } else if (id != null && id != 0) {
         formHeader.innerHTML = "Cập nhật sản phẩm";
-        document.querySelector('.field-id').style.display = null;
+        // document.querySelector('.field-id').style.display = null;
         getDataById(id);
     }
 }
@@ -304,7 +294,6 @@ function onClickPageIndex(currentPage) {
 }
 
 function registerEvents() {
-    hideModal();
     showFormCreate();
 }
 

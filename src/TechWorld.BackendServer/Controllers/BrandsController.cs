@@ -125,7 +125,6 @@ namespace TechWorld.BackendServer.Controllers
                 var entity = new Brand()
                 {
                     Name = request.Name,
-                    CssClass = request.CssClass,
                     CategoryId = request.CategoryId
                 };
                 _context.Brands.Add(entity);
@@ -177,7 +176,6 @@ namespace TechWorld.BackendServer.Controllers
             }
 
             brand.Name = request.Name;
-            brand.CssClass = request.CssClass;
             brand.CategoryId = request.CategoryId;
             var result = await _context.SaveChangesAsync();
             if (result > 0)

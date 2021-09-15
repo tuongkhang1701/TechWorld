@@ -104,38 +104,39 @@ function loadData() {
                         <div id="content" style="height:444px;overflow:hidden">
                             <div class="content__title"></div>
                             <div class="content__body">
-                                <h3>Đặc điểm nổi bật của Asus Zenbook UX425EA-KI429T/i5-1135G7</h3>
-                                <img src="../assets/images/637595413254775559_asus-zenbook-ux425ea-ki429t-i5-1135g7-thiet-ke.jfif" alt="">
-                                <h2>Đánh giá chi tiết Asus Zenbook UX425EA-KI429T/i5-1135G7</h2>
-                                <p>Asus ZenBook UX425EA KI429T thuộc dòng ZenBook cao cấp của Asus, là chiếc laptop mang đến cho bạn trải nghiệm hoàn toàn khác biệt, từ thiết kế đỉnh cao cho đến hiệu năng xuất sắc và những giá trị hàng đầu của một siêu phẩm
-                                    công nghệ.</p>
-                                <img src="../assets/images/asus-zenbook-ux425-fpt-7.jpg" alt="">
-                                <h4>Kiệt tác của công nghệ</h4>
-                                <p>Phiên bản ZenBook 14 UX425EA trong bài viết có màu xám thông, thể hiện sự thâm trầm, hiện đại. Kiểu dáng cao cấp và hoàn thiện từ kim loại nguyên khối, cùng màn hình viền siêu mỏng tạo nên một chiếc laptop đẹp hoàn mỹ.
-                                    Asus ZenBook 14 UX425EA mang tới đẳng cấp riêng biệt cho người dùng, khẳng định giá trị của sự trí tuệ qua một thiết bị công nghệ đỉnh cao.</p>
-                                <img src="../assets/images/asus-zenbook-ux425-fpt-1.jpg" alt="">
-                                <h4>Độ bền chuẩn quân đội</h4>
-                                <p>Không chỉ đẹp mà độ bền của Asus ZenBook 14 UX425EA cũng rất đáng kinh ngạc. ZenBook 14 thậm chí còn đạt chuẩn quân đội Mỹ MIL-STD-810G. Máy đã trải qua rất nhiều thử nghiệm trong môi trường khắc nghiệt, bao gồm cả độ cao;
-                                    thả rơi; rung lắc; nhiệt độ cao thấp, … để có được độ bền cứng cáp, hoạt động ổn định trong thời gian dài.</p>
-                                <img src="../assets/images/asus-zenbook-ux425-fpt-5.jpg" alt="">
-                                <h4>Hiển thị hình ảnh tuyệt mỹ</h4>
-                                <p>Vẻ đẹp của màn hình ZenBook 14 UX425EA khó có thể diễn tả hết bằng lời mà bạn cần phải tự cảm nhận mới thấy được đầy đủ sự hấp dẫn. Một màn hình 14 inch độ phân giải Full HD sắc nét, độ sáng tới 400 nits được bao phủ bởi
-                                    4 cạnh viền siêu mỏng tạo hiệu ứng tràn viền tuyệt đẹp. Tỷ lệ màn hình chiếm tới 90% thân máy, đồng nghĩa với việc hình ảnh như nổi lên trước mắt bạn. Những trải nghiệm như xem ảnh, xem phim trên Asus ZenBook 14 UX425EA
-                                    sẽ tuyệt vời hơn bao giờ hết.</p>
-                                <img src="../assets/images/asus-zenbook-ux425-fpt-3.jpg" alt="">
-                                <h4>Tăng cường hiệu suất, hiệu quả tối đa</h4>
-                                <p>Bạn sẽ còn phải bất ngờ hơn nữa khi bên trong chiếc laptop siêu nhỏ gọn này là bộ vi xử lý Intel thế hệ thứ 11 mới nhất hiện nay. Asus ZenBook UX425EA trang bị bộ vi xử lý Intel Core i5 1135G7 sản xuất trên tiến trình 10nm
-                                    với 4 lõi 8 luồng, tốc độ tối đa 4.20GHz cực mạnh. Ngoài ra GPU đồ họa cũng được nâng cấp lên Intel Iris Xe Graphics, cho hiệu năng đồ họa vượt trội. Bên cạnh đó ZenBook 14 còn có sẵn 8GB RAM LPDDR4X 4266 MHz và ổ cứng
-                                    SSD 512GB PCIe 3.0 siêu tốc. Khả năng xử lý cực nhanh mọi tác vụ giúp công việc của bạn diễn ra một cách hoàn hảo.</p>
-                                <img src="../assets/images/asus-zenbook-ux425-fpt-11.jpg" alt="">
-                                <h4>Thời lượng pin đáng kinh ngạc</h4>
-                                <p>Tính cơ động tuyệt vời của ZenBook 14 UX425EA được thể hiện ở thời lượng pin tối đa lên tới 22 tiếng sau một lần sạc đầy. Bạn có thể làm việc mọi lúc mọi nơi mà không cần quan tâm đến nguồn sạc. Ngoài ra máy còn hỗ trợ
-                                    tính năng sạc nhanh, cho phép sạc đầy 60% pin chỉ trong vòng 49 phút, đảm bảo nguồn năng lượng dồi dào.</p>
-                                <img src="../assets/images/637413930224403423_HASP-Asus-Vivobook-UX425.jpg" alt="">
-                                <h4>Laptop 14 inch mỏng nhất thế giới đầy đủ kết nối</h4>
-                                <p>Asus ZenBook 14 UX425EA gây ấn tượng mạnh nhờ kiểu dáng thanh mảnh đầy thời trang. Trọng lượng chỉ 1,13kg và độ mỏng 14,3mm giúp máy có khả năng cơ động tuyệt vời, luôn đồng hành cùng bạn đi bất cứ đâu. ZenBook 14 UX425EA
-                                    cũng là chiếc laptop 14 inch mỏng nhất thế giới sở hữu đầy đủ cổng kết nối, kể cả cổng HDMI kích thước tiêu chuẩn và USB Type-A, mang đến những kết nối linh hoạt đầy tiện lợi.</p>
-                                <img src="../assets/images/asus-zenbook-ux425-fpt-2.jpg" alt="">
+                                
+                            <h3>Đặc điểm nổi bật của Asus Zenbook UX425EA-KI429T/i5-1135G7</h3>
+                            <img src="../assets/images/637595413254775559_asus-zenbook-ux425ea-ki429t-i5-1135g7-thiet-ke.jfif" alt="">
+                            <h2>Đánh giá chi tiết Asus Zenbook UX425EA-KI429T/i5-1135G7</h2>
+                            <p>Asus ZenBook UX425EA KI429T thuộc dòng ZenBook cao cấp của Asus, là chiếc laptop mang đến cho bạn trải nghiệm hoàn toàn khác biệt, từ thiết kế đỉnh cao cho đến hiệu năng xuất sắc và những giá trị hàng đầu của một siêu phẩm
+                                công nghệ.</p>
+                            <img src="../assets/images/asus-zenbook-ux425-fpt-7.jpg" alt="">
+                            <h4>Kiệt tác của công nghệ</h4>
+                            <p>Phiên bản ZenBook 14 UX425EA trong bài viết có màu xám thông, thể hiện sự thâm trầm, hiện đại. Kiểu dáng cao cấp và hoàn thiện từ kim loại nguyên khối, cùng màn hình viền siêu mỏng tạo nên một chiếc laptop đẹp hoàn mỹ.
+                                Asus ZenBook 14 UX425EA mang tới đẳng cấp riêng biệt cho người dùng, khẳng định giá trị của sự trí tuệ qua một thiết bị công nghệ đỉnh cao.</p>
+                            <img src="../assets/images/asus-zenbook-ux425-fpt-1.jpg" alt="">
+                            <h4>Độ bền chuẩn quân đội</h4>
+                            <p>Không chỉ đẹp mà độ bền của Asus ZenBook 14 UX425EA cũng rất đáng kinh ngạc. ZenBook 14 thậm chí còn đạt chuẩn quân đội Mỹ MIL-STD-810G. Máy đã trải qua rất nhiều thử nghiệm trong môi trường khắc nghiệt, bao gồm cả độ cao;
+                                thả rơi; rung lắc; nhiệt độ cao thấp, … để có được độ bền cứng cáp, hoạt động ổn định trong thời gian dài.</p>
+                            <img src="../assets/images/asus-zenbook-ux425-fpt-5.jpg" alt="">
+                            <h4>Hiển thị hình ảnh tuyệt mỹ</h4>
+                            <p>Vẻ đẹp của màn hình ZenBook 14 UX425EA khó có thể diễn tả hết bằng lời mà bạn cần phải tự cảm nhận mới thấy được đầy đủ sự hấp dẫn. Một màn hình 14 inch độ phân giải Full HD sắc nét, độ sáng tới 400 nits được bao phủ bởi
+                                4 cạnh viền siêu mỏng tạo hiệu ứng tràn viền tuyệt đẹp. Tỷ lệ màn hình chiếm tới 90% thân máy, đồng nghĩa với việc hình ảnh như nổi lên trước mắt bạn. Những trải nghiệm như xem ảnh, xem phim trên Asus ZenBook 14 UX425EA
+                                sẽ tuyệt vời hơn bao giờ hết.</p>
+                            <img src="../assets/images/asus-zenbook-ux425-fpt-3.jpg" alt="">
+                            <h4>Tăng cường hiệu suất, hiệu quả tối đa</h4>
+                            <p>Bạn sẽ còn phải bất ngờ hơn nữa khi bên trong chiếc laptop siêu nhỏ gọn này là bộ vi xử lý Intel thế hệ thứ 11 mới nhất hiện nay. Asus ZenBook UX425EA trang bị bộ vi xử lý Intel Core i5 1135G7 sản xuất trên tiến trình 10nm
+                                với 4 lõi 8 luồng, tốc độ tối đa 4.20GHz cực mạnh. Ngoài ra GPU đồ họa cũng được nâng cấp lên Intel Iris Xe Graphics, cho hiệu năng đồ họa vượt trội. Bên cạnh đó ZenBook 14 còn có sẵn 8GB RAM LPDDR4X 4266 MHz và ổ cứng
+                                SSD 512GB PCIe 3.0 siêu tốc. Khả năng xử lý cực nhanh mọi tác vụ giúp công việc của bạn diễn ra một cách hoàn hảo.</p>
+                            <img src="../assets/images/asus-zenbook-ux425-fpt-11.jpg" alt="">
+                            <h4>Thời lượng pin đáng kinh ngạc</h4>
+                            <p>Tính cơ động tuyệt vời của ZenBook 14 UX425EA được thể hiện ở thời lượng pin tối đa lên tới 22 tiếng sau một lần sạc đầy. Bạn có thể làm việc mọi lúc mọi nơi mà không cần quan tâm đến nguồn sạc. Ngoài ra máy còn hỗ trợ
+                                tính năng sạc nhanh, cho phép sạc đầy 60% pin chỉ trong vòng 49 phút, đảm bảo nguồn năng lượng dồi dào.</p>
+                            <img src="../assets/images/637413930224403423_HASP-Asus-Vivobook-UX425.jpg" alt="">
+                            <h4>Laptop 14 inch mỏng nhất thế giới đầy đủ kết nối</h4>
+                            <p>Asus ZenBook 14 UX425EA gây ấn tượng mạnh nhờ kiểu dáng thanh mảnh đầy thời trang. Trọng lượng chỉ 1,13kg và độ mỏng 14,3mm giúp máy có khả năng cơ động tuyệt vời, luôn đồng hành cùng bạn đi bất cứ đâu. ZenBook 14 UX425EA
+                                cũng là chiếc laptop 14 inch mỏng nhất thế giới sở hữu đầy đủ cổng kết nối, kể cả cổng HDMI kích thước tiêu chuẩn và USB Type-A, mang đến những kết nối linh hoạt đầy tiện lợi.</p>
+                            <img src="../assets/images/asus-zenbook-ux425-fpt-2.jpg" alt="">
                             </div>
                             <a href="#" class="btn" id="content__btn-read-more" onclick="event.preventDefault();btnReadMore()">Xem thêm</a>
                         </div>
@@ -211,7 +212,8 @@ function addToCart() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
+                'Authorization': check_cookie_name("accessTokenUser")?`Bearer ${check_cookie_name("accessTokenUser")}`:`Bearer ${check_cookie_name("accessToken")}`
+
             },
             body: JSON.stringify({
                 ProductId: id,
@@ -219,9 +221,14 @@ function addToCart() {
             })
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi tải trang!");
-            loadCart();
+            if (res.ok){
+                toast({
+                    title: 'Thành công',
+                    message: "Thêm vào giỏ hàng thành công",
+                    type: 'success'
+                });
+                loadCart();
+            }
         })
         .catch(error => {
             toast({
@@ -239,7 +246,8 @@ function loadCart() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${check_cookie_name("accessToken")}`
+                'Authorization': check_cookie_name("accessTokenUser")?`Bearer ${check_cookie_name("accessTokenUser")}`:`Bearer ${check_cookie_name("accessToken")}`
+
             }
         })
         .then(function(res) {
@@ -285,22 +293,208 @@ function loadCart() {
 document.querySelector('.header__cart-wrap').addEventListener('click', function(){
     window.location.href = "/cart.html";
 });
+
+function loadAccount(){
+    let id = check_cookie_name("Id");
+    fetch(`https://localhost:44345/api/Users/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': check_cookie_name("accessTokenUser")?`Bearer ${check_cookie_name("accessTokenUser")}`:`Bearer ${check_cookie_name("accessToken")}`
+
+
+            }
+        })
+        .then(function(res) {
+            if (!res.ok)
+                throw Error("Có lỗi xảy ra khi tải trang!");
+            return res.json();
+        })
+        .then(function(data) {
+            let container = document.getElementById('header__navbar-list');
+                let html = `
+                <li class="header__navbar-item header__navbar-item--has-notify">
+                <a class="header__navbar-item-link" href="#">
+                    <i class="header__navbar-icon far fa-bell"></i> Thông báo
+                </a>
+                <div class="header__notify">
+                    <header class="header__notify-header">
+                        <h3>Thông báo mới nhận</h3>
+                    </header>
+                    <ul class="header__notify-list">
+                        <li class="header__notify-item header__notify-item--viewed">
+                            <a href="" class="header__notify-link">
+                                <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                <div class="header__notify-info">
+                                    <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                        Paris - Kinh đô của thời trang</span>
+                                    <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                        hãng</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="header__notify-item header__notify-item--viewed">
+                            <a href="" class="header__notify-link">
+                                <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                <div class="header__notify-info">
+                                    <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                        Paris - Kinh đô của thời trang</span>
+                                    <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                        hãng</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="header__notify-item header__notify-item--viewed">
+                            <a href="" class="header__notify-link">
+                                <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                <div class="header__notify-info">
+                                    <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                        Paris - Kinh đô của thời trang</span>
+                                    <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                        hãng</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="header__notify-item header__notify-item--viewed">
+                            <a href="" class="header__notify-link">
+                                <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                <div class="header__notify-info">
+                                    <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                        Paris - Kinh đô của thời trang</span>
+                                    <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                        hãng</span>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <footer class="header__notify-footer">
+                        <a href="" class="header__notify-footer-btn">Xem tất cả</a>
+                    </footer>
+                </div>
+                </li>
+                <li class="header__navbar-item">
+                    <a class="header__navbar-item-link" href="#">
+                        <i class="header__navbar-icon far fa-question-circle"></i> Trợ giúp
+                    </a>
+                </li>
+                <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Đăng
+                    ký</li>
+                <li class="header__navbar-item header__navbar-item--strong" id="btnLog">Đăng nhập</li>
+                `;
+                if(data.FullName){
+                    html = `
+                    <li class="header__navbar-item header__navbar-item--has-notify">
+                    <a class="header__navbar-item-link" href="#">
+                        <i class="header__navbar-icon far fa-bell"></i> Thông báo
+                    </a>
+                    <div class="header__notify">
+                        <header class="header__notify-header">
+                            <h3>Thông báo mới nhận</h3>
+                        </header>
+                        <ul class="header__notify-list">
+                            <li class="header__notify-item header__notify-item--viewed">
+                                <a href="" class="header__notify-link">
+                                    <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                    <div class="header__notify-info">
+                                        <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                            Paris - Kinh đô của thời trang</span>
+                                        <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                            hãng</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="header__notify-item header__notify-item--viewed">
+                                <a href="" class="header__notify-link">
+                                    <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                    <div class="header__notify-info">
+                                        <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                            Paris - Kinh đô của thời trang</span>
+                                        <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                            hãng</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="header__notify-item header__notify-item--viewed">
+                                <a href="" class="header__notify-link">
+                                    <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                    <div class="header__notify-info">
+                                        <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                            Paris - Kinh đô của thời trang</span>
+                                        <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                            hãng</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="header__notify-item header__notify-item--viewed">
+                                <a href="" class="header__notify-link">
+                                    <img src="https://cf.shopee.vn/file/7c62cc9332a5dc631902b44ed9c06f1c_tn" alt="" class="header__notify-img">
+                                    <div class="header__notify-info">
+                                        <span class="header__notify-name">Nước hoa Discover được xuất sứ từ
+                                            Paris - Kinh đô của thời trang</span>
+                                        <span class="header__notify-description">Mô tả nước hoa Discover chính
+                                            hãng</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <footer class="header__notify-footer">
+                            <a href="" class="header__notify-footer-btn">Xem tất cả</a>
+                        </footer>
+                    </div>
+                </li>
+                <li class="header__navbar-item">
+                    <a class="header__navbar-item-link" href="#">
+                        <i class="header__navbar-icon far fa-question-circle"></i> Trợ giúp
+                    </a>
+                </li>
+                <li class="header__navbar-item header__navbar-user">
+                            <span class="header__navbar-user-name">Xin chào ${data.FullName}</span>
+                            <ul class="header__navbar-user-menu">
+                                <li class="header__navbar-user-item">
+                                    <a href="./account/profile.html">Tài khoản của tôi</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="./account/address.html">Địa chỉ của tôi</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="">Đơn mua</a>
+                                </li>
+                                <li class="header__navbar-user-item header__navbar-user-item-separate">
+                                    <a href="">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </li>
+                    `;
+                }
+                container.innerHTML = html;
+        })
+        .catch(error => {
+            toast({
+                title: 'Error',
+                message: "Có lỗi xảy ra khi tải hình ảnh!",
+                type: 'error'
+            });
+        });
+}
 function btnReadMore(){
     let elementContent = document.getElementById('content')
         if (elementContent.style.height === '444px') {
             elementContent.style.height = '';
             elementContent.style.overflow = '';
-            btnReadMore.innerText = "Thu gọn";
+            document.getElementById('content__btn-read-more').innerText = "Thu gọn";
         } else {
             elementContent.style.height = '444px';
             elementContent.style.overflow = 'hidden';
-            btnReadMore.innerText = "Xem thêm";
+            document.getElementById('content__btn-read-more').innerText = "Xem thêm";
         }
     }
 
 
 (function constructor(){
     this.loadData();
+    loadAccount();
     loadCart();
 })()
 

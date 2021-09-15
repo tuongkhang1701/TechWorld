@@ -6,6 +6,31 @@ filter = {
 let accessToken = `Bearer ${check_cookie_name("accessToken")?check_cookie_name("accessToken"):'--something went wrong---'}`;
 var url = 'https://localhost:44345/api/Brands/pagination';
 
+
+document.addEventListener("DOMContentLoaded", function(){
+    const categoryId = document.getElementById('CategoryId');
+    window.onload = function(){
+        fetch('https://localhost:44345/api/Categories', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            },
+            method: 'GET'
+        })
+        .then((response)=> {
+            return response.json();
+        })
+        .then((res) => {
+            let str = "<option value='' selected>Danh mục</option>";
+            res.forEach(item => {
+                str += `<option  value="${item.Id}">${item.Name}</option>`;
+                
+            });
+
+            categoryId.innerHTML=str;
+        })
+    };
+});
 // Process data
 function getDataForm() {
     let dataInput = document.querySelectorAll(`#formBrand input`);
@@ -65,41 +90,41 @@ function loadData() {
         });
 }
 
-function loadCategories(categoryId) {
-    let selectCategory = document.getElementById('CategoryId');
-    fetch('https://localhost:44345/api/Categories', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': accessToken
-            },
-            body: JSON.stringify(this.filter)
-        })
-        .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi tải danh mục!");
-            return res.json();
-        })
-        .then(function(data) {
-            let html = '';
-            selectCategory.options.length = 1;
-            Array.from(data).forEach(function(item, i) {
-                if (item.Id == categoryId) {
-                    html += `<option value='${item.Id}' selected> ${item.Name} </option>`;
-                } else {
-                    html += `<option value='${item.Id}'> ${item.Name} </option>`;
-                }
-            });
-            document.getElementById('CategoryId').insertAdjacentHTML("beforeend", html);
-        })
-        .catch(error => {
-            toast({
-                title: 'Error',
-                message: error,
-                type: 'error'
-            });
-        });
-}
+// function loadCategories(categoryId) {
+//     let selectCategory = document.getElementById('CategoryId');
+//     fetch('https://localhost:44345/api/Categories', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': accessToken
+//             },
+//             body: JSON.stringify(this.filter)
+//         })
+//         .then(function(res) {
+//             if (!res.ok)
+//                 throw Error("Có lỗi xảy ra khi tải danh mục!");
+//             return res.json();
+//         })
+//         .then(function(data) {
+//             let html = '';
+//             selectCategory.options.length = 1;
+//             Array.from(data).forEach(function(item, i) {
+//                 if (item.Id == categoryId) {
+//                     html += `<option value='${item.Id}' selected> ${item.Name} </option>`;
+//                 } else {
+//                     html += `<option value='${item.Id}'> ${item.Name} </option>`;
+//                 }
+//             });
+//             document.getElementById('CategoryId').insertAdjacentHTML("beforeend", html);
+//         })
+//         .catch(error => {
+//             toast({
+//                 title: 'Error',
+//                 message: error,
+//                 type: 'error'
+//             });
+//         });
+// }
 
 
 function deleteData(id) {
@@ -144,18 +169,18 @@ function createData() {
                 body: JSON.stringify(inputValues)
             })
             .then(function(res) {
-                console.log(res);
-                if (!res.ok)
-                    throw Error("Xảy ra lỗi khi thêm sản phẩm");
-                else {
-                    hideModal();
+                if(res.ok){
+                    let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
                     loadData();
                     toast({
-                        title: 'Success',
-                        message: 'Thêm sản phẩm thành công',
+                        title: 'Thành công',
+                        message: 'Thêm thương hiệu thành công',
                         type: 'success'
                     });
                 }
+                
             })
 
     } catch (error) {
@@ -208,8 +233,6 @@ function getDataById(id) {
             }
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi khi xảy ra khi tải dữ liệu");
             return res.json();
         })
         .then(function(data) {
@@ -222,12 +245,13 @@ function getDataById(id) {
                         item.value = data[jtem];
                 });
             });
-            loadCategories(data.Category.Id);
+            document.getElementById('CategoryId').value = data.Category.Id;
+            // loadCategories(data.Category.Id);
         })
         .catch(error => {
             toast({
-                title: 'Error',
-                message: error,
+                title: 'Thất bại',
+                message: 'Có lỗi khi xảy ra khi tải dữ liệu',
                 type: 'error'
             });
         });
@@ -244,13 +268,13 @@ function updateData() {
             body: JSON.stringify(inputValues)
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi cập nhật dữ liệu!");
-            else {
-                hideModal();
+            if (res.ok){
+                let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
                 loadData();
                 toast({
-                    title: 'Success',
+                    title: 'Thành công',
                     message: 'Cập nhật sản phẩm thành công',
                     type: 'success'
                 });
@@ -259,15 +283,15 @@ function updateData() {
         .catch(error => {
             toast({
                 title: 'Error',
-                message: error,
+                message: "Có lỗi xảy ra khi cập nhật dữ liệu!",
                 type: 'error'
             });
         });
 }
 
 function SubmitData() {
-    let fieldId = document.querySelector('.field-id input');
-    if (fieldId.value != '' && fieldId.value != undefined) {
+    let id = document.getElementById('Id');
+    if (id.value != '' && id.value != undefined) {
         updateData();
     } else {
         createData();
@@ -282,7 +306,7 @@ function resetForm() {
     });
 
     formDataSelect.forEach(function(item) {
-        item.options.length = 1;
+        item.value = '';
     });
 }
 
@@ -295,21 +319,6 @@ function logOut() {
     delete_cookie("accessToken");
     checkLogin();
 }
-//Events
-document.querySelector('.modal__overlay').addEventListener('click', function() { hideModal() });
-
-
-function hideModal() {
-    document.querySelector('.modal').style.display = null;
-    document.querySelector('.modal__overlay').style.display = null;
-    document.querySelector('.form__modal--brand').style.display = null;
-}
-
-function showModal() {
-    document.querySelector('.modal').style.display = "flex";
-    document.querySelector('.modal__overlay').style.display = "block";
-    document.querySelector(`.form__modal--brand`).style.display = "block";
-}
 
 function showFormCreate() {
     document.getElementById('btnCreate').addEventListener('click', function(e) {
@@ -320,16 +329,19 @@ function showFormCreate() {
 
 
 function showForm(id) {
-    let formHeader = document.querySelector('.form__header');
-    loadCategories();
-    showModal();
+    let formHeader = document.querySelector('.header-modal');
+    // loadCategories();
+    // showModal();
+    let modal = document.getElementById('modal');
+    if(!modal.classList.contains('show'))
+            modal.classList.add('show');
     if (id == null && id == undefined) {
-        document.querySelector('.field-id').style.display = 'none';
+        // document.querySelector('.field-id').style.display = 'none';
         resetForm();
         formHeader.innerHTML = "Thêm mới sản phẩm"
     } else if (id != null && id != 0) {
         formHeader.innerHTML = "Cập nhật sản phẩm";
-        document.querySelector('.field-id').style.display = null;
+        // document.querySelector('.field-id').style.display = null;
         getDataById(id);
     }
 }
@@ -350,7 +362,6 @@ function onClickPageIndex(currentPage) {
 }
 
 function registerEvents() {
-    hideModal();
     showFormCreate();
 }
 

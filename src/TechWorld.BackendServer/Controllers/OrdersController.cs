@@ -25,11 +25,11 @@ namespace TechWorld.BackendServer.Controllers
         {
             _context = context;
         }
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var orders = await _context.Orders.Include("OrderDetails").Select(x => new OrderVm()
+            var id = User.GetSpecificClaim(ClaimTypes.NameIdentifier);
+            var orders = await _context.Orders.Include("OrderDetails").Where(x  => x.CustomerId == id).Select(x => new OrderVm()
             {
                 OrderDetails = x.OrderDetails.Select(z => new OrderDetailVm()
                 {

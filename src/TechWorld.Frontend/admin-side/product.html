@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../assets/css/libraries/toast.css">
     <link rel="stylesheet" href="../assets/css/libraries/validator.css">
     <link rel="stylesheet" href="../assets/css/libraries/pagination.css">
+    <link rel="stylesheet" href="../assets/css/libraries/modal.css">
+
 
     <title>Document</title>
 </head>
@@ -207,7 +209,7 @@
     </div>
 
     <!-- Modal layout -->
-    <div class="modal">
+    <!-- <div class="modalz">
         <div class="modal__overlay">
         </div>
         <div class="modal__body">
@@ -220,61 +222,6 @@
                             <form action="" id="formProduct" class="backround-primary formData">
                                 <div class="grid">
                                     <div class="grid__row">
-                                        <div class="form-group field-id grid__column-12">
-                                            <input type="hidden" id="Id" name="Id" placeholder="Mã Sản phẩm" class="form-control formData__input" readonly>
-                                            <span class="form-message"></span>
-                                        </div>
-                                        <div class="form-group grid__column-4">
-                                            <input type="text" rules="required" id="Name" name="Name" placeholder="Sản phẩm" class="form-control formData__input">
-                                            <span class="form-message"></span>
-                                        </div>
-
-                                        <div class="form-group dropdownCategory grid__column-2">
-                                            <select name="CategoryId" id="CategoryId">
-                                                <option value="">Danh mục</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group dropdownBrand grid__column-2">
-                                            <select name="BrandId" id="BrandId">
-                                                <option value="">Thương hiệu</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group grid__column-4">
-                                            <input type="number" rules="required" id="Quantity" name="Quantity" placeholder="Số lượng" class="form-control formData__input">
-                                            <span class="form-message"></span>
-                                        </div>
-                                        <div class="form-group grid__column-4">
-                                            <input type="number" rules="required" id="OriginalPrice" name="OriginalPrice" placeholder="Giá gốc" class="form-control formData__input">
-                                            <span class="form-message"></span>
-                                        </div>
-
-                                        <div class="form-group grid__column-4">
-                                            <input type="number" rules="required" id="Price" name="Price" placeholder="Giá bán" class="form-control formData__input">
-                                            <span class="form-message"></span>
-                                        </div>
-
-                                        <div class="form-group grid__column-4">
-                                            <input type="number" rules="required" id="PromotionPrice" name="PromotionPrice" placeholder="Giá khuyến mãi" class="form-control formData__input">
-                                            <span class="form-message"></span>
-                                        </div>
-
-                                        <div class="form-group grid__column-8 form-group__image">
-                                            <div class="container-image">
-                                                <input type="hidden" id="hideId" value="">
-                                                <input type="file" id="Image" onchange="preview()" multiple>
-                                                <div id="imageList">
-
-                                                </div>
-                                                <label for="Image"><i class="fas fa-upload"></i><span> &nbsp; Tải ảnh</span></label>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="form-groups grid__full-width group-btn">
-                                            <a href="#" class="btn btn-normal" id="btnBack">Quay lại</a>
-                                            <a href="#" class="btn btn-normal" onclick="SubmitData()" type=" submit ">Xác nhận</a>
-                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -294,6 +241,137 @@
 
 
 
+    </div> -->
+
+    <!-- Modal layout -->
+    <div class="modal" id="modal">
+        <div class="modal-container" id="modal-container">
+            <div class="modal-inner" id="modal-inner" style="width: 734px;height: 100vh;">
+                <div class="grid">
+                    <p class="grid__full-width header-modal">Thêm sản phẩm</p> 
+                    <form action="" class="grid__row" id="formProduct">
+                        <div class="grid__column-12 form-group">
+                            <input type="hidden" id="Id" name="Id" class="form-control">
+                            <input type="text" rules="required|min:5" id="Name" name="Name" class="form-control"  placeholder="Tên sản phẩm">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-4 form-group">
+                            <select class="form-control" rules="required" name="CategoryId" id="CategoryId" onchange="changFuncCategory()">
+                                <option value="">Danh mục</option>
+                            </select>
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-5 form-group">
+                            <select class="form-control" rules="required" name="BrandId" id="BrandId">
+                                <option value="">Thương hiệu</option>
+                            </select>
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-3 form-group">
+                            <input type="text" rules="required" id="Quantity" name="Quantity" class="form-control"  placeholder="Số lượng">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-4 form-group">
+                            <input type="text" rules="required" id="OriginalPrice" name="OriginalPrice" class="form-control"  placeholder="Giá nhập">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-4 form-group">
+                            <input type="text" rules="required" id="Price" name="Price" class="form-control"  placeholder="Giá gốc">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-4 form-group password">
+                            <input type="text" rules="required" id="PromotionPrice" name="PromotionPrice" class="form-control"  placeholder="Giá khuyến mãi">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group">
+                            <input type="text" rules="required" id="SeoTitle" name="SeoTitle" class="form-control"  placeholder="Seo Title">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group">
+                            <input type="text" rules="required" id="SeoKeyword" name="SeoKeyword" class="form-control"  placeholder="Seo Keyword">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group">
+                            <input type="text" rules="required" id="SeoDescription" name="SeoDescription" class="form-control"  placeholder="Seo Description">
+                            <span class="form-message"></span>
+                        </div>
+
+
+                        <div class="grid__column-12 form-group" id="editor">
+                            <textarea type="text" rules="required" cols="80" rows="10" id="Content" name="Content" class="form-control"  placeholder="Mô tả"></textarea>
+                            <span class="form-message"></span>
+                        </div>
+                        
+                        <div class="grid__column-4 form-group">
+                            <div class="container-image">
+                                <input type="hidden" id="hideId" value="">
+                                <input type="file" id="Image" onchange="preview()" multiple>
+                                <label for="Image"><i class="fas fa-upload"></i><span> &nbsp; Tải ảnh</span></label>
+                            </div>
+                        </div>
+                        <div class="grid__column-8 form-group">
+                            <div id="imageList">
+
+                            </div>
+                        </div>
+                        <div class="grid__column-12 form-group password">
+                            <p class="grid__full-width">Thông số kĩ thuật</p> 
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Cpu" name="Cpu" class="form-control"  placeholder="Cpu">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Ram" name="Ram" class="form-control"  placeholder="Ram">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Screen" name="Screen" class="form-control"  placeholder="Màn hình">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Graphic" name="Graphic" class="form-control"  placeholder="Card đồ họa">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="HardWare" name="HardWare" class="form-control"  placeholder="Phần cứng">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Os" name="Os" class="form-control"  placeholder="Hệ điều hành">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Weight" name="Weight" class="form-control"  placeholder="Khối lượng">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Size" name="Size" class="form-control"  placeholder="Kích thước">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="Origin" name="Origin" class="form-control"  placeholder="Xuất sứ">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-6 form-group password">
+                            <input type="text" rules="required" id="ReleasedYear" name="ReleasedYear" class="form-control"  placeholder="Năm phát hành">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-12 dp-fl-end">
+                            <button class="btn btn-close-modal" id="btn-close-modal">Trở lại</button>
+                            <button type="submit" class="btn btn--primary" id="btnCreate" onclick="event.preventDefault();SubmitData()">Hoàn thành</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
     </div>
     <div id="toast">
 
@@ -302,13 +380,31 @@
     <script src="../assets/js/admin-side/pagination.js "></script>
     <script src="../assets/js/libraries/toast.js "></script>
     <script src="../assets/js/libraries/cookie.js "></script>
+    <script src="../assets/js/libraries/modal.js "></script>
     <script src="../assets/js/admin-side/product.js "></script>
     <script src="../assets/js/libraries/validator.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
     <script>
         var form = new Validator('#formProduct');
         form.onSubmit = function(data) {
             console.log(data);
         }
+
+        modal({open:'btnCreate', close:'btn-close-modal'});
+
+        
+    </script>
+
+    <script>
+        let editor;
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .then(newEditor => {
+                    editor = newEditor;
+                })
+            .catch( error => {
+                console.error( error );
+            } );
     </script>
 </body>
 

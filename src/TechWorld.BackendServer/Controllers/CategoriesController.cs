@@ -123,10 +123,6 @@ namespace TechWorld.BackendServer.Controllers
                 var entity = new Category()
                 {
                     Name = request.Name,
-                    SeoAlias = request.SeoAlias,
-                    SeoDescription = request.SeoDescription,
-                    SeoKeyword = request.SeoKeyword,
-                    SeoTitle = request.SeoTitle
                 };
                 _context.Categories.Add(entity);
                 var result = await _context.SaveChangesAsync();

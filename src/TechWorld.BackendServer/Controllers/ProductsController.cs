@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TechWorld.BackendServer.Authorization;
@@ -14,6 +17,7 @@ using TechWorld.BackendServer.Helpers;
 using TechWorld.BackendServer.Services;
 using TechWorld.ViewModels;
 using TechWorld.ViewModels.Contents;
+using static Humanizer.In;
 using static System.Net.Mime.MediaTypeNames;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,6 +40,7 @@ namespace TechWorld.BackendServer.Controllers
             return Ok(productVms);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -53,7 +58,7 @@ namespace TechWorld.BackendServer.Controllers
             return BadRequest();
         }
 
-        [ClaimRequirement(ClaimTypes.Role, SystemConstants.ADMIN)]
+        [AllowAnonymous]
         [HttpPost("pagination")]
         public async Task<IActionResult> GetPaging([FromBody] PaginationRequest request)
         {
@@ -63,7 +68,7 @@ namespace TechWorld.BackendServer.Controllers
                 var query = CreatNewProduct();
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
-                    query = query.Where(x => x.Name.Contains(request.Keyword) || x.Description.Contains(request.Keyword) || x.Content.Contains(request.Keyword));
+                    query = query.Where(x => x.Name.Contains(request.Keyword) || x.Description.Contains(request.Keyword) || x.Content.Contains(request.Keyword) || x.Category.Name.Contains(request.Keyword));
                 }
                 var totalRow = await query.CountAsync();
 
@@ -205,11 +210,12 @@ namespace TechWorld.BackendServer.Controllers
                     Description = request.Description,
                     BrandId = request.BrandId,
                     CategoryId = request.CategoryId,
-                    SeoAlias = request.SeoAlias,
+                    SeoAlias = TextHelper.ToUnsignString(request.Name),
                     SeoDescription = request.SeoDescription,
                     SeoTitle = request.SeoTitle,
                     SeoKeyword = request.SeoKeyword,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    
                 };
                 _context.Products.Add(entity);
                 var result = await _context.SaveChangesAsync();
@@ -225,13 +231,29 @@ namespace TechWorld.BackendServer.Controllers
                 {
                     _context.ProductImages.AddRange(new List<ProductImage>()
                     {
-                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = true, DateCreated = null, ProductId = res.Id},
-                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = false, DateCreated = null, ProductId = res.Id},
-                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = false, DateCreated = null, ProductId = res.Id},
-                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = false, DateCreated = null, ProductId = res.Id}
+                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = true, DateCreated = DateTime.Now, ProductId = res.Id},
+                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = false, DateCreated = DateTime.Now, ProductId = res.Id},
+                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = false, DateCreated = DateTime.Now, ProductId = res.Id},
+                        new ProductImage(){Path = urlEmpty, Caption = null, IsDefault = false, DateCreated = DateTime.Now, ProductId = res.Id}
+                    });
+                    var a = await _context.SaveChangesAsync();
+
+                    _context.Specifications.Add(new Specification()
+                    {
+                        Cpu = request.Cpu,
+                        Graphic = request.Graphic,
+                        HardWare = request.HardWare,
+                        Origin = request.Origin,
+                        Os = request.Os,
+                        Ram = request.Ram,
+                        ReleasedYear = request.ReleasedYear,
+                        Screen = request.Screen,
+                        Size = request.Size,
+                        Weight = request.Weight,
+                        ProductId = res.Id
                     });
                     await _context.SaveChangesAsync();
-                    return Ok(res.Id);
+                    return NoContent();
                 }
 
                 return BadRequest();
@@ -282,9 +304,24 @@ namespace TechWorld.BackendServer.Controllers
             product.SeoKeyword = request.SeoKeyword;
             product.UpdatedDate = DateTime.Now;
             _context.Products.Update(product);
-
             var result = await _context.SaveChangesAsync();
 
+            var spe = await _context.Specifications.Where(x => x.ProductId == id).SingleOrDefaultAsync();
+            if(spe != null)
+            {
+                spe.Cpu = request.Cpu;
+                spe.Graphic = request.Graphic;
+                spe.HardWare = request.HardWare;
+                spe.Origin = request.Origin;
+                spe.Os = request.Os;
+                spe.Ram = request.Ram;
+                spe.ReleasedYear = request.ReleasedYear;
+                spe.Screen = request.Screen;
+                spe.Size = request.Size;
+                spe.Weight = request.Weight;
+                _context.Specifications.Update(spe);
+                var re = await _context.SaveChangesAsync();
+            }
             if (result > 0)
             {
                 return Ok(id);
@@ -354,6 +391,7 @@ namespace TechWorld.BackendServer.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("get-images")]
         public IActionResult GetImages()
         {

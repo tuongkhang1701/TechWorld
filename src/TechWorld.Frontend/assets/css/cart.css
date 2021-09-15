@@ -301,7 +301,7 @@
 
 .cart__option {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     background-color: var(--while-color);
     height: 100px;
     z-index: 5;

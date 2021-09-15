@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="./assets/css/base.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/libraries/toast.css">
+    <link rel="stylesheet" href="./assets/css/libraries/modal.css">
+    <link rel="stylesheet" href="./assets/css/libraries/validator.css">
     <link rel="stylesheet" href="./assets/css/libraries/pagination.css">
     <link rel="stylesheet" href="./assets/fontawesome-free-5.15.3-web/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -48,7 +50,7 @@
                         </li>
                     </ul>
 
-                    <ul class="header__navbar-list">
+                    <ul class="header__navbar-list" id="header__navbar-list">
                         <li class="header__navbar-item header__navbar-item--has-notify">
                             <a class="header__navbar-item-link" href="#">
                                 <i class="header__navbar-icon far fa-bell"></i> Thông báo
@@ -114,11 +116,11 @@
                                 <i class="header__navbar-icon far fa-question-circle"></i> Trợ giúp
                             </a>
                         </li>
-                        <!-- <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Đăng
+                        <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate" id="btnRegis">Đăng
                             ký</li>
-                        <li class="header__navbar-item header__navbar-item--strong">Đăng nhập</li> -->
+                        <li class="header__navbar-item header__navbar-item--strong" id="btnLog">Đăng nhập</li>
 
-                        <li class="header__navbar-item header__navbar-user">
+                        <!-- <li class="header__navbar-item header__navbar-user">
                             <img src="https://scontent.fdad3-3.fna.fbcdn.net/v/t1.0-1/p320x320/52655887_1026010077590598_5764310010649640960_n.jpg?_nc_cat=109&_nc_sid=7206a8&_nc_ohc=bBFF5BRha9UAX8OJio0&_nc_oc=AQkuIzG6Bmah5aEzIhzjCfWfcEtNAA965qmtzjBR4SxUzmzcrQWq1ZMzaHWmxT3Cs6W8BphvJ49l8n8U3GznPKnY&_nc_ht=scontent.fdad3-3.fna&tp=6&oh=3f3d0a6a0a3859a932ef62dc35551d9f&oe=5F9505CB"
                                 alt="" class="header__navbar-user-img">
                             <span class="header__navbar-user-name">Tường Khang</span>
@@ -136,7 +138,7 @@
                                     <a href="">Đăng xuất</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
                 <!-- Header with search -->
@@ -174,7 +176,7 @@
                             </div>
                         </div>
 
-                        <button class="header__search-btn">
+                        <button class="header__search-btn" onclick="search()">
                             <i class="header__search-btn-icon fas fa-search"></i>
                         </button>
                     </div>
@@ -182,12 +184,12 @@
                     <!-- Cart layout -->
                     <div class="header__cart">
                         <div class="header__cart-wrap">
-                            <i class="header__cart-icon fas fa-shopping-cart"></i>
-                            <span class="header__cart-notice">3</span>
+                            <i class="header__cart-icon fas fa-shopping-cart" id="header__cart-icon"></i>
+                            <span class="header__cart-notice">0</span>
                             <!--No cart:  header__cart-list--no-cart -->
                             <div class="header__cart-list">
                                 <img src="../assets/images/cart-empty.png" alt="" class="header__cart--no-cart-img">
-                                <span class="header__cart-list-no-cart-msg">Sông sâu tĩnh lặng lúa chín cúi đầu</span>
+                                <span class="header__cart-list-no-cart-msg">Không có sản phẩm</span>
 
 
                             </div>
@@ -200,11 +202,11 @@
                 <!-- Header with category -->
                 <div class="header-with-category">
                     <ul class="header-with-category__list">
-                        <li><i class="fas fa-mobile-alt header-with-category__icon"></i>Điện thoại</li>
-                        <li><i class="fas fa-laptop header-with-category__icon"></i>Laptop</li>
-                        <li><i class="fas fa-clock header-with-category__icon"></i>Đồng hồ</li>
-                        <li><i class="fas fa-headphones header-with-category__icon"></i>Phụ kiện</li>
-                        <li><i class="fas fa-sim-card header-with-category__icon"></i>Sim & Thẻ</li>
+                        <li onclick="search('Điện thoại')"><i class="fas fa-mobile-alt header-with-category__icon"></i>Điện thoại</li>
+                        <li onclick="search('Laptop')"><i class="fas fa-laptop header-with-category__icon"></i>Laptop</li>
+                        <li onclick="search('Đồng hồ')"><i class="fas fa-clock header-with-category__icon"></i>Đồng hồ</li>
+                        <li onclick="search('Phụ kiện')"><i class="fas fa-headphones header-with-category__icon"></i>Phụ kiện</li>
+                        <li onclick="search('Sim & Thẻ')"><i class="fas fa-sim-card header-with-category__icon"></i>Sim & Thẻ</li>
                     </ul>
                 </div>
             </div>
@@ -756,6 +758,33 @@
             </div>
         </footer>
 
+        <!-- Modal layout -->
+        <div class="modal" id="modal">
+            <div class="modal-container" id="modal-container">
+                <div class="modal-inner" id="modal-inner">
+                    <div class="grid">
+                        <p class="grid__full-width header-modal">ĐĂNG NHẬP</p> 
+                        <form action="" class="grid__row" id="formLogin">
+                            <div class="grid__column-12 form-group">
+                                <input type="hidden" id="Id" name="Id" class="form-control">
+                                <input type="text" rules="required" id="UserName" name="UserName" class="form-control"  placeholder="Tên đăng nhập">
+                                <span class="form-message"></span>
+                            </div>
+                            <div class="grid__column-12 form-group">
+                                <input type="password" rules="required" id="Password" name="Password" class="form-control"  placeholder="Tên đăng nhập">
+                                <span class="form-message"></span>
+                            </div>
+                            <div class="grid__column-12 dp-fl-end">
+                                <button class="btn btn-close-modal" id="btn-close-modal">Trở lại</button>
+                                <button type="submit" class="btn btn--primary" id="btnLogin">Đăng nhập</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
         <div id="toast">
 
         </div>
@@ -875,8 +904,13 @@
     <script src="./assets/js/admin-side/pagination.js "></script>
     <script src="./assets/js/libraries/toast.js "></script>
     <script src="./assets/js/libraries/cookie.js "></script>
+    <script src="./assets/js/libraries/modal.js "></script>
+    <script src="./assets/js/libraries/validator.js "></script>
     <script src="./assets/js/client-side/index.js"></script>
     <script src="./assets/js/client-side/cart.js"></script>
+    <script>
+        modal({open:'btnLog', close:'btn-close-modal'});
+    </script>
 </body>
 
 </html>

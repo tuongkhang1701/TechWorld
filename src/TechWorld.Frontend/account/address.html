@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../assets/css/account/profile.css">
     <link rel="stylesheet" href="../assets/css/libraries/toast.css">
     <link rel="stylesheet" href="../assets/css/libraries/pagination.css">
+    <link rel="stylesheet" href="../assets/css/libraries/validator.css">
     <link rel="stylesheet" href="../assets/css/libraries/modal.css">
     <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -50,7 +51,7 @@
                         </li>
                     </ul>
 
-                    <ul class="header__navbar-list">
+                    <ul class="header__navbar-list" id="header__navbar-list">
                         <li class="header__navbar-item header__navbar-item--has-notify">
                             <a class="header__navbar-item-link" href="#">
                                 <i class="header__navbar-icon far fa-bell"></i> Thông báo
@@ -250,62 +251,7 @@
                                 </button>
                             </div>
                             <div class="address-body__container" id="address-body__container">
-                                <div class="address-item">
-                                    <div class="address-body__list">
-                                        <div class="profile-body__item">
-                                            <label for="FullName">Họ và tên</label>
-                                            <span>
-                                                <b>Lê Tường Khang</b>
-                                            </span>
-                                        </div>
-                                        <div class="profile-body__item">
-                                            <label for="Phone">Số điện thoại</label>
-                                            <span>0332330436</span>
-                                        </div>
-                                        <div class="profile-body__item">
-                                            <label for="StreetAddress">Địa chỉ</label>
-                                            <span>375 Bình Quới
-                                                Phường 28
-                                                Quận Bình Thạnh
-                                                TP. Hồ Chí Minh</span>
-                                        </div>
-                                    </div>
-                                    <div class="address-body__option">
-                                        <a href="" class="btn address-body__option--edit">Sửa</a>
-                                        <a href="" class="btn address-body__option--delete">Xóa</a>
-                                        <!-- btn--disabled -->
-                                        <a href="" class="btn  address-body__option--default">Thiết lập mặc định</a>
-                                    </div>
-                                </div>
-
-                                <div class="address-item">
-                                    <div class="address-body__list">
-                                        <div class="profile-body__item">
-                                            <label for="FullName">Họ và tên</label>
-                                            <span>
-                                                <b>Lê Tường Khang</b>
-                                            </span>
-                                            <p class="address-body__isDefault">Mặc định</p>
-                                        </div>
-                                        <div class="profile-body__item">
-                                            <label for="Phone">Số điện thoại</label>
-                                            <span>0332330436</span>
-                                        </div>
-                                        <div class="profile-body__item">
-                                            <label for="StreetAddress">Địa chỉ</label>
-                                            <span>375 Bình Quới
-                                                Phường 28
-                                                Quận Bình Thạnh
-                                                TP. Hồ Chí Minh</span>
-                                        </div>
-                                    </div>
-                                    <div class="address-body__option">
-                                        <a href="" class="btn address-body__option--edit">Sửa</a>
-                                        <a href="" class="btn address-body__option--delete">Xóa</a>
-                                        <!-- btn--disabled -->
-                                        <a href="" class="btn btn--disabled address-body__option--default">Thiết lập mặc định</a>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -409,32 +355,42 @@
                     <div class="grid">
                         <p class="grid__full-width header-modal">Địa chỉ mới</p> 
                         <form action="" class="grid__row" id="FormAddress">
-                            <div class="grid__column-6">
+                            <div class="grid__column-6 form-group">
                                 <input type="hidden" name="Id" class="form-control">
-                                <input type="text" name="FulllName" class="form-control"  placeholder="Họ và tên">
+                                <input type="text" style="width:100%;" rules="required|min:5" name="FullName" id="FullName" class="form-control"  placeholder="Họ và tên">
+                                <span class="form-message"></span>
+
                             </div>
 
-                            <div class="grid__column-6">
-                                <input type="text" name="Phone" class="form-control"  placeholder="Số điện thoại">
+                            <div class="grid__column-6 form-group">
+                                <input type="text" id="Phone" name="Phone" style="width:100%;" rules="required|phone" class="form-control"  placeholder="Số điện thoại">
+                                <span class="form-message"></span>
+                                
                             </div>
 
-                            <div class="grid__column-12">
-                                <select class="form-control" id="Province" name="Province" onchange="changFuncProvince();">
+                            <div class="grid__column-12 form-group">
+                                <select class="form-control" rules="required" id="Province" name="Province" onchange="changFuncProvince();">
                                 <option value="" selected>Thành phố</option>
                                 </select>
+                                <span class="form-message"></span>
+                                
                             </div>
-                            <div class="grid__column-6">
-                                <select class="form-control" id="District" name="District" onchange="changFuncDistrict();">
+                            <div class="grid__column-6 form-group">
+                                <select class="form-control" rules="required" id="District" name="District" onchange="changFuncDistrict();">
                                 <option value="" selected>Quận/Huyện</option>
                                 </select>
+                                <span class="form-message"></span>
+
                             </div>
-                            <div class="grid__column-6">
-                                <select class="form-control" id="Ward" name="Ward">
+                            <div class="grid__column-6 form-group">
+                                <select class="form-control" rules="required" id="Ward" name="Ward">
                                 <option value="" selected>Phường/Xã</option>
                                 </select>
+                                <span class="form-message"></span>
+
                             </div>
-                            <div class="grid__column-12">
-                                <input type="text" class="form-control" name="StreetAddress"  placeholder="Địa chỉ cụ thể">
+                            <div class="grid__column-12 form-group">
+                                <input type="text" style="width:100%;" rules="required" class="form-control" id="StreetAddress" name="StreetAddress"  placeholder="Địa chỉ cụ thể">
                             </div>
                             <div class="grid__column-12 dp-fl-start">
                                 <input type="checkbox" id="isDefault" name="isDefault" class="mr-10">
@@ -462,11 +418,17 @@
     <script src="../assets/js/libraries/toast.js "></script>
     <script src="../assets/js/libraries/cookie.js "></script>
     <script src="../assets/js/libraries/modal.js "></script>
+    <script src="../assets/js/libraries/validator.js "></script>
 
     <script src="../assets/js/client-side/index.js"></script>
     <script src="../assets/js/client-side/cart.js"></script>
     <script src="../assets/js/client-side/address.js"></script>
     <script>
+        var form = new Validator('#FormAddress');
+                form.onSubmit = function(data) {
+                    console.log(data);
+                }
+
         modal({open:'address-body__add-address', close:'btn-close-modal'});
         
     </script>

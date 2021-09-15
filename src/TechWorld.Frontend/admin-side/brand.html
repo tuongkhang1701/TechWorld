@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../assets/css/admin-side.css">
     <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.css">
     <link rel="stylesheet" href="../assets/css/libraries/toast.css">
+    <link rel="stylesheet" href="../assets/css/libraries/modal.css">
+    <link rel="stylesheet" href="../assets/css/libraries/pagination.css">
+    <link rel="stylesheet" href="../assets/css/libraries/validator.css">
 
     <title>Document</title>
 </head>
@@ -98,7 +101,7 @@
     </div>
 
     <!-- Modal layout -->
-    <div class="modal">
+    <!-- <div class="modal">
         <div class="modal__overlay">
         </div>
         <div class="modal__body">
@@ -130,6 +133,37 @@
             </div>
         </div>
     </div>
+    </div> -->
+
+
+    <!-- Modal layout -->
+    <div class="modal" id="modal">
+        <div class="modal-container" id="modal-container">
+            <div class="modal-inner" id="modal-inner">
+                <div class="grid">
+                    <p class="grid__full-width header-modal">Thêm thương hiệu</p> 
+                    <form action="" class="grid__row" id="formBrand">
+                        <div class="grid__column-12 form-group">
+                            <input type="hidden" id="Id" name="Id" class="form-control">
+                            <input type="text" rules="required|min:5" id="Name" name="Name" class="form-control"  placeholder="Tên thương hiệu">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="grid__column-12 form-group password">
+                            <select name="CategoryId" rules="required" id="CategoryId">
+                                <option value="">Danh mục</option>
+                            </select>
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="grid__column-12 dp-fl-end">
+                            <button class="btn btn-close-modal" id="btn-close-modal">Trở lại</button>
+                            <button type="submit" class="btn btn--primary" onclick="SubmitData()">Hoàn thành</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
     </div>
     <div id="toast">
 
@@ -138,7 +172,18 @@
     <script src="../assets/js/admin-side/pagination.js"></script>
     <script src="../assets/js/libraries/toast.js"></script>
     <script src="../assets/js/libraries/cookie.js"></script>
+    <script src="../assets/js/libraries/modal.js"></script>
+    <script src="../assets/js/libraries/validator.js"></script>
     <script src="../assets/js/admin-side/brand.js"></script>
+    <script>
+        var form = new Validator('#formBrand');
+        form.onSubmit = function(data) {
+            console.log(data);
+        }
+
+        modal({open:'btnCreate', close:'btn-close-modal'});
+
+    </script>
 </body>
 
 </html>

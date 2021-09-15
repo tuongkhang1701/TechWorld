@@ -6,6 +6,55 @@ filter = {
 let accessToken = `Bearer ${check_cookie_name("accessToken")?check_cookie_name("accessToken"):'--something went wrong---'}`
 var url = 'https://localhost:44345/api/Products/pagination';
 
+
+document.addEventListener("DOMContentLoaded", function(){
+    const categoryId = document.getElementById('CategoryId');
+    window.onload = function(){
+        fetch('https://localhost:44345/api/Categories', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            },
+            method: 'GET'
+        })
+        .then((response)=> {
+            return response.json();
+        })
+        .then((res) => {
+            let str = "<option value='' selected>Danh mục</option>";
+            res.forEach(item => {
+                str += `<option  value="${item.Id}">${item.Name}</option>`;
+                
+            });
+
+            categoryId.innerHTML=str;
+        })
+    };
+});
+
+function changFuncCategory(){
+    let selectBox = document.getElementById('CategoryId');
+    let selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    let brand = document.getElementById('BrandId');
+    fetch(`https://localhost:44345/${selectedValue}/Brands`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            },
+            method: 'GET'
+        })
+        .then((response)=> {
+            return response.json();
+        })
+        .then((res) => {
+            let str = "<option selected>Thương hiệu</option>";
+            res.forEach(item => {
+                str += `<option value=${item.Id}>${item.Name}</option>`;
+                
+            });
+            brand.innerHTML=str;
+        })
+}
 // Process data
 function getDataForm() {
     let dataInput = document.querySelectorAll(`#formProduct input`);
@@ -39,8 +88,6 @@ function loadData() {
             body: JSON.stringify(this.filter)
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi tải trang!");
             return res.json();
         })
         .then(function(data) {
@@ -114,6 +161,7 @@ function deleteData(id) {
 
 function createData() {
     var inputValues = getDataForm();
+    inputValues.Content = editor.getData();
     inputValues.Id = 0;
     try {
         fetch('https://localhost:44345/api/Products', {
@@ -125,11 +173,10 @@ function createData() {
                 body: JSON.stringify(inputValues)
             })
             .then(function(res) {
-                console.log(res);
-                if (!res.ok)
-                    throw Error("Xảy ra lỗi khi thêm sản phẩm");
-                else {
-                    hideModal();
+                if (res.ok){
+                    let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
                     loadData();
                     toast({
                         title: 'Success',
@@ -156,7 +203,6 @@ function createData() {
 
 function getDataById(id) {
     let formData = document.querySelectorAll('#formProduct input');
-
     fetch(`https://localhost:44345/api/Products/${id}`, {
             method: 'GET',
             headers: {
@@ -171,16 +217,24 @@ function getDataById(id) {
         })
         .then(function(data) {
             let listKey = Object.keys(data);
+            let listKeySpe = Object.keys(data.Specification);
 
             Array.from(formData).forEach(function(item, index) {
                 //data.Name
                 listKey.forEach(function(jtem) {
                     if (item.id == jtem)
                         item.value = data[jtem];
+                    // if(jtem =='Content')
+                    //     editor.data.set(data[jtem] == null ?data[jtem]:'');
+
+                });
+                listKeySpe.forEach(jtem => {
+                    if (item.id == jtem)
+                        item.value = data.Specification[jtem];
                 });
             });
-            loadCategories(data.Category.Id);
-            loadBrands(data.Category.Id, data.Brand.Id);
+            // loadCategories(data.Category.Id);
+            // loadBrands(data.Category.Id, data.Brand.Id);
         })
         .catch(error => {
             toast({
@@ -193,6 +247,7 @@ function getDataById(id) {
 
 function updateData() {
     var inputValues = getDataForm();
+    inputValues.Content = editor.getData();
     fetch(`https://localhost:44345/api/Products/${inputValues.Id}`, {
             method: 'PUT',
             headers: {
@@ -202,11 +257,11 @@ function updateData() {
             body: JSON.stringify(inputValues)
         })
         .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi cập nhật dữ liệu!");
-            else {
-                hideModal();
-                loadData();
+            if (res.ok){
+            let modal = document.getElementById('modal');
+                    if(modal.classList.contains('show'))
+                      modal.classList.remove('show');
+                      loadData();
                 toast({
                     title: 'Success',
                     message: 'Cập nhật sản phẩm thành công',
@@ -254,79 +309,79 @@ function pagination(filter) {
 
 }
 
-function loadCategories(categoryId) {
-    let selectCategory = document.getElementById('CategoryId');
-    fetch('https://localhost:44345/api/Categories', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': accessToken
-            }
-        })
-        .then(function(res) {
-            if (!res.ok)
-                throw Error("Có lỗi xảy ra khi tải danh mục!");
-            return res.json();
-        })
-        .then(function(data) {
-            let html = '';
-            selectCategory.options.length = 1;
-            Array.from(data).forEach(function(item, i) {
-                if (item.Id == categoryId) {
-                    html += `<option value='${item.Id}' selected> ${item.Name} </option>`;
-                } else {
-                    html += `<option value='${item.Id}'> ${item.Name} </option>`;
-                }
-            });
-            document.getElementById('CategoryId').insertAdjacentHTML("beforeend", html);
-        })
-        .catch(error => {
-            toast({
-                title: 'Error',
-                message: error,
-                type: 'error'
-            });
-        });
-}
+// function loadCategories(categoryId) {
+//     let selectCategory = document.getElementById('CategoryId');
+//     fetch('https://localhost:44345/api/Categories', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': accessToken
+//             }
+//         })
+//         .then(function(res) {
+//             if (!res.ok)
+//                 throw Error("Có lỗi xảy ra khi tải danh mục!");
+//             return res.json();
+//         })
+//         .then(function(data) {
+//             // let html = '';
+//             // selectCategory.options.length = 1;
+//             // Array.from(data).forEach(function(item, i) {
+//             //     if (item.Id == categoryId) {
+//             //         html += `<option value='${item.Id}' selected> ${item.Name} </option>`;
+//             //     } else {
+//             //         html += `<option value='${item.Id}'> ${item.Name} </option>`;
+//             //     }
+//             // });
+//             // document.getElementById('CategoryId').insertAdjacentHTML("beforeend", html);
+//         })
+//         .catch(error => {
+//             toast({
+//                 title: 'Error',
+//                 message: error,
+//                 type: 'error'
+//             });
+//         });
+// }
 
-function loadBrands(categoryId, brandId) {
-    let selectBrand = document.getElementById('BrandId');
-    if (categoryId != '') {
-        selectBrand.options.length = 1
-        fetch(`https://localhost:44345/${categoryId}/Brands`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': accessToken
-                }
-            })
-            .then(function(res) {
-                if (!res.ok)
-                    throw Error("Có lỗi xảy ra khi tải thương hiệu!");
-                return res.json();
-            })
-            .then(function(data) {
-                let html = '';
-                Array.from(data).forEach(function(item, i) {
-                    if (item.Id == brandId)
-                        html += `<option value='${item.Id}' selected> ${item.Name} </option>`;
-                    else
-                        html += `<option value='${item.Id}'> ${item.Name} </option>`;
-                });
-                selectBrand.insertAdjacentHTML("beforeend", html);
-            })
-            .catch(error => {
-                console.log(error);
-                toast({
-                    title: 'Error',
-                    message: "Có lỗi xảy ra khi tải thương hiệu!",
-                    type: 'error'
-                });
-            });
-    } else {
-        selectBrand.options.length = 1
-    }
-}
+// function loadBrands(categoryId, brandId) {
+//     let selectBrand = document.getElementById('BrandId');
+//     if (categoryId != '') {
+//         selectBrand.options.length = 1
+//         fetch(`https://localhost:44345/${categoryId}/Brands`, {
+//                 method: 'GET',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     'Authorization': accessToken
+//                 }
+//             })
+//             .then(function(res) {
+//                 if (!res.ok)
+//                     throw Error("Có lỗi xảy ra khi tải thương hiệu!");
+//                 return res.json();
+//             })
+//             .then(function(data) {
+//                 let html = '';
+//                 Array.from(data).forEach(function(item, i) {
+//                     if (item.Id == brandId)
+//                         html += `<option value='${item.Id}' selected> ${item.Name} </option>`;
+//                     else
+//                         html += `<option value='${item.Id}'> ${item.Name} </option>`;
+//                 });
+//                 selectBrand.insertAdjacentHTML("beforeend", html);
+//             })
+//             .catch(error => {
+//                 console.log(error);
+//                 toast({
+//                     title: 'Error',
+//                     message: "Có lỗi xảy ra khi tải thương hiệu!",
+//                     type: 'error'
+//                 });
+//             });
+//     } else {
+//         selectBrand.options.length = 1
+//     }
+// }
 
 function getImages() {
     fetch(`https://localhost:44345/api/Products/get-images`, {
@@ -441,7 +496,7 @@ function preview() {
 
 function loadImages(productId) {
     document.getElementById('preview-image').innerHTML = '';
-    document.querySelector('.modal').style.display = "flex";
+    document.querySelector('.modalz').style.display = "flex";
     document.querySelector('.modal__overlay').style.display = "block";
     document.querySelector(`.form__modal--images`).style.display = "block";
 
@@ -483,8 +538,9 @@ function loadImages(productId) {
 }
 
 function SubmitData() {
-    let fieldId = document.querySelector('.field-id input');
-    if (fieldId.value != '' && fieldId.value != undefined) {
+    // let fieldId = document.querySelector('.field-id input');
+    let id = document.getElementById('Id');
+    if (id.value != '' && id.value != undefined) {
         updateData();
     } else {
         createData();
@@ -494,12 +550,13 @@ function SubmitData() {
 function resetForm() {
     let formDataInput = document.querySelectorAll(`#formProduct input`);
     let formDataSelect = document.querySelectorAll(`#formProduct select`);
+    document.querySelector('textarea').value = '';
     formDataInput.forEach(function(item, i) {
         item.value = '';
     });
 
     formDataSelect.forEach(function(item) {
-        item.options.length = 1;
+        item.value = '';
     });
 }
 
@@ -518,22 +575,8 @@ function logOut() {
 }
 
 
-document.querySelector('.modal__overlay').addEventListener('click', function() {
-    hideModal();
-});
 
-function hideModal() {
-    document.querySelector('.modal').style.display = null;
-    document.querySelector('.modal__overlay').style.display = null;
-    document.querySelector('.form__modal--product').style.display = null;
-    document.querySelector(`.form__modal--images`).style.display = null;
-};
 
-function showModal() {
-    document.querySelector('.modal').style.display = "flex";
-    document.querySelector('.modal__overlay').style.display = "block";
-    document.querySelector(`.form__modal--product`).style.display = "block";
-}
 
 document.getElementById('btnCreate').addEventListener('click', function(e) {
     e.preventDefault();
@@ -541,25 +584,28 @@ document.getElementById('btnCreate').addEventListener('click', function(e) {
 });
 
 
-function loadBrandByCategory() {
-    document.getElementById('CategoryId').addEventListener('change', function() {
-        loadBrands(this.value);
-    });
-}
+// function loadBrandByCategory() {
+//     document.getElementById('CategoryId').addEventListener('change', function() {
+//         loadBrands(this.value);
+//     });
+// }
 
 function showForm(id) {
-    let formHeader = document.querySelector('.form__header');
-    loadCategories();
-    showModal();
+    let formHeader = document.querySelector('.header-modal');
+    // loadCategories();
+    // showModal();
+    let modal = document.getElementById('modal');
+    if(!modal.classList.contains('show'))
+            modal.classList.add('show');
     if (id == null && id == undefined) {
-        document.querySelector('.field-id').style.display = 'none';
+        // document.querySelector('.field-id').style.display = 'none';
         resetForm();
         formHeader.innerHTML = "Thêm mới sản phẩm"
     } else if (id != null && id != 0) {
         formHeader.innerHTML = "Cập nhật sản phẩm";
-        document.querySelector('.field-id').style.display = null;
+        // document.querySelector('.field-id').style.display = null;
         getDataById(id);
-    }
+    }   
 }
 
 
@@ -578,8 +624,7 @@ function onClickPageIndex(currentPage) {
 }
 
 function registerEvents() {
-    loadBrandByCategory();
-    hideModal();
+    // loadBrandByCategory();
 }
 
 (function contructor() {

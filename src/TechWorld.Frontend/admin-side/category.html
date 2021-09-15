@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../assets/css/admin-side.css">
     <link rel="stylesheet" href="../assets/fontawesome-free-5.15.3-web/css/all.css">
     <link rel="stylesheet" href="../assets/css/libraries/toast.css">
+    <link rel="stylesheet" href="../assets/css/libraries/pagination.css">
+    <link rel="stylesheet" href="../assets/css/libraries/modal.css">
+    <link rel="stylesheet" href="../assets/css/libraries/validator.css">
 
     <title>Document</title>
 </head>
@@ -96,33 +99,28 @@
         </footer>
     </div>
 
-    <!-- Modal layout -->
-    <div class="modal">
-        <div class="modal__overlay">
-        </div>
-        <div class="modal__body">
-            <div class="modal__inner">
-                <div class="form__modal form__modal--category">
-                    <p class="form__header">Cập nhật thông tin sản phẩm</p>
 
-                    <form action="" id="formCategory" class="backround-primary formData">
-                        <div class="form-groups field-id">
-                            <p>Mã danh mục</p>
-                            <input type="text" id="Id" placeholder="Mã Sản phẩm" class="form-control" readonly>
+    <!-- Modal layout -->
+    <div class="modal" id="modal">
+        <div class="modal-container" id="modal-container">
+            <div class="modal-inner" id="modal-inner">
+                <div class="grid">
+                    <p class="grid__full-width header-modal">Thêm thành viên</p> 
+                    <form action="" class="grid__row" id="formCategory">
+                        <div class="grid__column-12 form-group">
+                            <input type="hidden" id="Id" name="Id" class="form-control">
+                            <input type="text" rules="required|min:5" id="Name" name="Name" class="form-control"  placeholder="Tên danh mục">
+                            <span class="form-message"></span>
                         </div>
-                        <div class="form-groups">
-                            <p>Danh mục</p>
-                            <input type="text" id="Name" placeholder="Sản phẩm" class="form-control">
-                        </div>
-                        <div class="form-groups group-btn">
-                            <a href="#" class="btn btn-normal" id="btnBack">Quay lại</a>
-                            <a href="#" class="btn btn-normal" onclick="SubmitData()" type=" submit ">Xác nhận</a>
+                        <div class="grid__column-12 dp-fl-end">
+                            <button class="btn btn-close-modal" id="btn-close-modal">Trở lại</button>
+                            <button type="submit" class="btn btn--primary" onclick="SubmitData()">Hoàn thành</button>
                         </div>
                     </form>
                 </div>
+                
             </div>
         </div>
-    </div>
     </div>
     <div id="toast">
 
@@ -131,7 +129,17 @@
     <script src="../assets/js/admin-side/pagination.js"></script>
     <script src="../assets/js/libraries/toast.js "></script>
     <script src="../assets/js/libraries/cookie.js "></script>
+    <script src="../assets/js/libraries/modal.js "></script>
+    <script src="../assets/js/libraries/validator.js "></script>
     <script src="../assets/js/admin-side/category.js"></script>
+    <script>
+        var form = new Validator('#formCategory');
+        form.onSubmit = function(data) {
+            console.log(data);
+        }
+
+        modal({open:'btnCreate', close:'btn-close-modal'});
+    </script>
 </body>
 
 </html>
